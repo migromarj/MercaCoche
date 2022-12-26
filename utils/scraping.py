@@ -23,10 +23,10 @@ def extraer_coches_autocasion(num_pages=3):
 
         browser.get(url + "?page=" + str(page + 1))
         time.sleep(5)
-        request = browser.page_source
+        response = browser.page_source
         browser.quit()
 
-        soup = BeautifulSoup(request, "lxml")
+        soup = BeautifulSoup(response, "lxml")
 
         cars_container = soup.find('div', {'id': 'results-html'})
         cars = cars_container.find_all('article')
@@ -98,5 +98,79 @@ def extraer_coches_autocasion(num_pages=3):
                 'environmental_label': car_environmental_label,
                 'description': car_description
             })
+
+    return res
+
+def extraer_coches_coches_com(num_pages=3):
+    
+    url = 'https://www.coches.com/coches-segunda-mano/coches-ocasion.htm'
+    res = []
+    
+    for page in range(0, num_pages):
+
+        request = urllib.request.urlopen(url + "?page=" + str(page))
+        soup = BeautifulSoup(request, "lxml")
+
+        cars_container = soup.find('div', {'class': 'pillList vo-results__card-list script__vo-results-card-list'})
+
+        cars = cars_container.find_all('div', {'class': 'cc-car-card'})[:-1]
+        
+        for car in cars:
+            car_url = car.find('a')['href']
+            car_img = car.find('img', {'class':'cc-car-card-header-photo'})['src']
+
+            car_info = car.find('div', {'class': 'cc-car-card-body'}).find_all('div', {'class': 'cc-car-card-body-line'})
+
+            car_title = car_info[1].find('span').text.strip()
+
+            prices = car_info[0].find('div', {'class': 'cc-car-card-price'})
+
+            car_spot_price = prices.find('div', {'class': 'cc-car-card-price__cash'}).find('span', {'class':'cc-car-card-price__quantity'}).text
+            
+            if car_spot_price.strip() != '':
+                car_spot_price = float(car_spot_price.replace('€', '').replace('.', '').strip())
+            else:
+                car_spot_price = None
+
+            car_financed_price = prices.find('div', {'class': 'cc-car-card-price__financed'}).find('span', {'class':'cc-car-card-price__quantity'}).text
+
+            if car_financed_price.strip() != '':
+                car_financed_price = float(car_financed_price.replace('€', '').replace('.', '').strip())
+            else:
+                car_financed_price = None
+            
+            car_info_request = urllib.request.urlopen(car_url)
+            soup_info = BeautifulSoup(car_info_request, "lxml")
+            basic_data = soup_info.find('div', {'class': 'cc-car-overview cc-car-overview--r'}).find_all('div', {'class':'cc-car-overview__block'})
+
+            car_registration = basic_data[0].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_power = basic_data[1].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_km = basic_data[2].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_fuel = basic_data[3].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_bodywork = basic_data[4].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_change = basic_data[5].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_environmental_label = basic_data[6].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_color = basic_data[7].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_guarantee = basic_data[8].find('p', {'class':'cc-car-overview__text'}).text.strip()
+
+            car_description = soup_info.find('div', {'id': 'indexCardVehicleDescription'}).find('div', {'class':'index-card__info-text'}).find('div').text.strip()
+
+            res.append({
+                'title': car_title,
+                'url': car_url,
+                'img': car_img,
+                'spot_price': car_spot_price,
+                'financed_price': car_financed_price,
+                'registration': car_registration,
+                'fuel': car_fuel,
+                'km': car_km,
+                'bodywork': car_bodywork,
+                'change': car_change,
+                'power': car_power,
+                'guarantee': car_guarantee,
+                'color': car_color,
+                'environmental_label': car_environmental_label,
+                'description': car_description
+            })          
 
     return res
