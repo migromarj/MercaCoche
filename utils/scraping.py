@@ -11,20 +11,21 @@ if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unveri
     ssl._create_default_https_context = ssl._create_unverified_context
 
 
-def extraer_coches_autocasion(num_pages=3):
+def extract_cars_autocasion(num_pages=3):
+    
     url = 'https://www.autocasion.com/coches-ocasion'
     res = []
+    
+    options = webdriver.ChromeOptions()
+    options.headless = True
+
+    browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+
     for page in range(0, num_pages):
-
-        options = webdriver.ChromeOptions()
-        options.headless = True
-
-        browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
         browser.get(url + "?page=" + str(page + 1))
         time.sleep(5)
         response = browser.page_source
-        browser.quit()
 
         soup = BeautifulSoup(response, "lxml")
 
@@ -99,9 +100,11 @@ def extraer_coches_autocasion(num_pages=3):
                 'description': car_description
             })
 
+    browser.quit()
+
     return res
 
-def extraer_coches_coches_com(num_pages=3):
+def extract_cars_coches_com(num_pages=3):
     
     url = 'https://www.coches.com/coches-segunda-mano/coches-ocasion.htm'
     res = []
@@ -172,5 +175,104 @@ def extraer_coches_coches_com(num_pages=3):
                 'environmental_label': car_environmental_label,
                 'description': car_description
             })          
+
+    return res
+
+def extract_cars_motor_es(num_pages=3):
+
+    url = 'https://www.motor.es/coches-segunda-mano/'
+    res = []
+
+    for page in range(0, num_pages):
+
+        request = urllib.request.Request(url + '?pagina=' + str(page + 1) , headers={'User-Agent': 'Mozilla/5.0'})
+
+        webpage = urllib.request.urlopen(request).read()
+        soup = BeautifulSoup(webpage, "html.parser")
+
+        cars_container = soup.find('div', {'class': 'js-results-lists'})
+
+        cars = cars_container.find_all('article', {'class': 'elemento-segunda-mano'})[:-1]
+        
+        for car in cars:
+            
+            car_url = car.find('a', {'class':'link boton coche-link'})['href']
+
+            car_img = car.find('img')['src']
+
+            car_info = car.find('span', {'class': 'datos'})
+
+            car_title = car_info.find('h3','nombre-vehiculo').text.strip()
+
+            prices = car_info.find('div', {'class': 'precio-section'})
+
+            car_spot_price = prices.find('div', {'class': 'precio-contado'}).find('p', {'class':'precio'}).find('strong').text
+            
+            if car_spot_price.strip() != '':
+
+                price_value = car_spot_price.replace('€', '').replace('.', '').strip()
+
+                try:
+                    car_spot_price = float(price_value)
+                except:
+                    car_spot_price = None
+
+            else:
+                car_spot_price = None
+
+            car_financed_price = prices.find('div', {'class': 'precio-financiado'})
+
+            if car_financed_price != None:
+
+                price_value = car_financed_price.find('p', {'class':'precio'}).find('strong').text.replace('€', '').replace('.', '').strip()
+
+                try:
+                    car_financed_price = float(price_value)
+                except:
+                    car_financed_price = None
+
+            request = urllib.request.Request(car_url , headers={'User-Agent': 'Mozilla/5.0'})
+
+            webpage = urllib.request.urlopen(request).read()
+            soup_info = BeautifulSoup(webpage, "html.parser")
+            
+            basic_data = soup_info.find('section', {'class': 'zona-contenido ficha ancho-principal'}).find_all('div')
+
+            car_registration = basic_data[10].find('dd').text.strip()
+            car_power = basic_data[7].find('dd').text.strip()
+            car_km = basic_data[8].find('dd').text.strip()
+            car_fuel = basic_data[6].find('dd').text.strip()
+            car_bodywork = basic_data[9].find('dd').text.strip()
+            car_change = basic_data[12].find('dd').text.strip()
+            car_environmental_label = None
+            car_color = basic_data[7].find('p')
+            
+            if car_color != None:
+                car_color = car_color.text.strip()
+
+            car_guarantee = basic_data[11].find('dd').text.strip()
+
+            car_description = soup_info.find('div', {'class': 'descripcion'})
+
+            if car_description != None:
+                car_description = car_description.text.strip()
+
+            res.append({
+                'title': car_title,
+                'url': car_url,
+                'img': car_img,
+                'spot_price': car_spot_price,
+                'financed_price': car_financed_price,
+                'registration': car_registration,
+                'fuel': car_fuel,
+                'km': car_km,
+                'bodywork': car_bodywork,
+                'change': car_change,
+                'power': car_power,
+                'guarantee': car_guarantee,
+                'color': car_color,
+                'environmental_label': car_environmental_label,
+                'description': car_description
+            })                    
 
     return res
