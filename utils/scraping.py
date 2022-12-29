@@ -5,6 +5,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import time
+import datetime
 
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
@@ -39,6 +40,8 @@ def extract_cars_autocasion(num_pages=3):
             car_info = car.find('div', {'class': 'contenido-anuncio'})
             car_title = car_info.find('h2', {'itemprop': 'name'}).text.strip()
 
+            car_province = car_info.find('li', {'class': 'provincia'}).text.strip()
+
             car_spot_price = car_info.find('p', {'class': 'precio'}).find('span').text
             car_spot_price = float(car_spot_price.replace('€', '').replace('.', '').strip())
 
@@ -54,6 +57,10 @@ def extract_cars_autocasion(num_pages=3):
             basic_data = soup_info.find('ul', {'class': 'datos-basicos-ficha'}).find_all('li')
 
             car_registration = basic_data[0].find('span').text.strip()
+
+            registration_date = car_registration.split('/')
+            car_registration = datetime.date(int(registration_date[1]), int(registration_date[0]), 1)
+
             car_fuel = basic_data[1].find('span').text.strip()
             car_km = basic_data[2].find('span')
             if car_km is not None:
@@ -61,18 +68,33 @@ def extract_cars_autocasion(num_pages=3):
 
             car_bodywork = basic_data[3].find('span').text.strip()
             car_change = basic_data[4].find('span').text.strip()
-            car_power = basic_data[5].find('span').text.strip()
+            car_power = int(basic_data[5].find('span').text.strip())
+
             car_guarantee = basic_data[6].find('span').text.strip()
+
+            if 'meses' in car_guarantee:
+                car_guarantee = (True, int(car_guarantee.replace('meses', '').strip()))
+            else:
+                car_guarantee = (False, 0)
+
             car_color = basic_data[7].find('span').text.strip()
-            
-            car_environmental_label = None
-            
-            if len(basic_data) > 8:
-                car_environmental_label = basic_data[8].find_all('span')[1].text.strip()
 
             blocks_data = soup_info.find('section', {'class': 'col-izq'}).find_all('div', {'class': 'bloque'})
 
-            car_description = None
+            car_doors = None
+            car_seats = None
+
+            data_sheet = soup_info.find('div', {'class':'content-tab ficha-tecnica'})
+
+            if data_sheet is not None and data_sheet.find('ul') is not None:
+                for item in data_sheet.find('ul').find_all('li'):
+                    
+                    if item.find('span').text == 'Número de puertas':
+                        car_doors = int(item.text.split('puertas')[1].strip())
+                        
+                    if item.find('span').text == 'Número de plazas':
+                        car_seats = int(item.text.split('plazas')[1].strip())
+                        break
 
             for block in blocks_data:
                 
@@ -84,8 +106,10 @@ def extract_cars_autocasion(num_pages=3):
 
             res.append({
                 'title': car_title,
+                'brand': car_title.split(' ')[0].upper(),
                 'url': car_url,
                 'img': car_img,
+                'province': car_province,
                 'spot_price': car_spot_price,
                 'financed_price': car_financed_price,
                 'registration': car_registration,
@@ -96,7 +120,8 @@ def extract_cars_autocasion(num_pages=3):
                 'power': car_power,
                 'guarantee': car_guarantee,
                 'color': car_color,
-                'environmental_label': car_environmental_label,
+                'doors': car_doors,
+                'seats': car_seats,
                 'description': car_description
             })
 
@@ -126,6 +151,12 @@ def extract_cars_coches_com(num_pages=3):
 
             car_title = car_info[1].find('span').text.strip()
 
+            car_province = car.find('span', {'class': 'cc-car-card-city'}).text.strip()
+
+            if ',' in car_province:
+                aux = car_province.split(',')
+                car_province = aux[1].strip() + ' ' + aux[0].strip()
+
             prices = car_info[0].find('div', {'class': 'cc-car-card-price'})
 
             car_spot_price = prices.find('div', {'class': 'cc-car-card-price__cash'}).find('span', {'class':'cc-car-card-price__quantity'}).text
@@ -147,21 +178,55 @@ def extract_cars_coches_com(num_pages=3):
             basic_data = soup_info.find('div', {'class': 'cc-car-overview cc-car-overview--r'}).find_all('div', {'class':'cc-car-overview__block'})
 
             car_registration = basic_data[0].find('p', {'class':'cc-car-overview__text'}).text.strip()
+
+            if "/" in car_registration:
+                aux = car_registration.split('/')
+                car_registration = datetime.date(int(aux[1]), int(aux[0]), 1)
+            else:
+                car_registration = datetime.date(int(car_registration), 1, 1)
+
             car_power = basic_data[1].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_power = int(car_power.split('CV')[0].strip())
+
             car_km = basic_data[2].find('p', {'class':'cc-car-overview__text'}).text.strip()
+
+            if car_km.strip() == 'NUEVO':
+                car_km = 0
+            else:
+                car_km = int(car_km.split('km')[0].replace('.','').strip())
+
             car_fuel = basic_data[3].find('p', {'class':'cc-car-overview__text'}).text.strip()
-            car_bodywork = basic_data[4].find('p', {'class':'cc-car-overview__text'}).text.strip()
             car_change = basic_data[5].find('p', {'class':'cc-car-overview__text'}).text.strip()
-            car_environmental_label = basic_data[6].find('p', {'class':'cc-car-overview__text'}).text.strip()
             car_color = basic_data[7].find('p', {'class':'cc-car-overview__text'}).text.strip()
             car_guarantee = basic_data[8].find('p', {'class':'cc-car-overview__text'}).text.strip()
+
+            if car_guarantee.strip() == 'SÍ':
+                car_guarantee = (True, None)
+            else:
+                car_guarantee = (False, None)
+
+            data_sheet = soup_info.find('div', {'class': 'index-card__technical-data-section'}).find_all('div',{'class':'index-card__technical-data-item index-card__technical-data-item--all'})
+
+            car_doors = None
+            car_seats = None
+
+            if data_sheet[4].find('div', {'class':'index-card__technical-data-info'}) != None:
+                car_doors = int(data_sheet[4].find('div', {'class':'index-card__technical-data-info'}).text.strip())
+
+            if data_sheet[5].find('div', {'class':'index-card__technical-data-info'}) != None:
+                car_seats = int(data_sheet[5].find('div', {'class':'index-card__technical-data-info'}).text.strip())
+
+            if data_sheet[9].find('div', {'class':'index-card__technical-data-info'}) != None:
+                car_bodywork = data_sheet[9].find('div', {'class':'index-card__technical-data-info'}).text.strip()
 
             car_description = soup_info.find('div', {'id': 'indexCardVehicleDescription'}).find('div', {'class':'index-card__info-text'}).find('div').text.strip()
 
             res.append({
                 'title': car_title,
+                'brand': car_title.split(' ')[0].upper(),
                 'url': car_url,
                 'img': car_img,
+                'province': car_province,
                 'spot_price': car_spot_price,
                 'financed_price': car_financed_price,
                 'registration': car_registration,
@@ -172,11 +237,13 @@ def extract_cars_coches_com(num_pages=3):
                 'power': car_power,
                 'guarantee': car_guarantee,
                 'color': car_color,
-                'environmental_label': car_environmental_label,
+                'doors': car_doors,
+                'seats': car_seats,
                 'description': car_description
             })          
 
     return res
+
 
 def extract_cars_motor_es(num_pages=3):
 
@@ -203,6 +270,11 @@ def extract_cars_motor_es(num_pages=3):
             car_info = car.find('span', {'class': 'datos'})
 
             car_title = car_info.find('h3','nombre-vehiculo').text.strip()
+
+            car_province = car_info.find('span', {'class': 'lugar'}).text.strip()
+
+            if "(" in car_province:
+                car_province = car_province.split('(')[1].split(')')[0].strip()
 
             prices = car_info.find('div', {'class': 'precio-section'})
 
@@ -238,19 +310,56 @@ def extract_cars_motor_es(num_pages=3):
             
             basic_data = soup_info.find('section', {'class': 'zona-contenido ficha ancho-principal'}).find_all('div')
 
-            car_registration = basic_data[10].find('dd').text.strip()
-            car_power = basic_data[7].find('dd').text.strip()
-            car_km = basic_data[8].find('dd').text.strip()
-            car_fuel = basic_data[6].find('dd').text.strip()
-            car_bodywork = basic_data[9].find('dd').text.strip()
-            car_change = basic_data[12].find('dd').text.strip()
-            car_environmental_label = None
-            car_color = basic_data[7].find('p')
-            
-            if car_color != None:
-                car_color = car_color.text.strip()
+            car_registration = None
+            car_power = None
+            car_km = None
+            car_bodywork = None
+            car_fuel = None
+            car_change = None
+            car_color = None
+            car_guarantee = (False, None)
+            car_doors = None
+            car_seats = None
 
-            car_guarantee = basic_data[11].find('dd').text.strip()
+            for data in basic_data:
+
+                if data.find('dd') != None and data.find('dd').text.strip() != '-':
+                    if data.find('dt').text.strip() == 'Matriculación':
+                        car_registration = data.find('dd').text.strip()
+                        aux = car_registration.split('/')
+                        car_registration = datetime.date(int(aux[1]), int(aux[0]), 1)
+
+                    elif data.find('dt').text.strip() == 'Potencia':
+                        car_power = data.find('dd').text.strip()
+                        car_power = int(car_power.split(' ')[0])
+
+                    elif data.find('dt').text.strip() == 'Kilómetros':
+                        car_km = data.find('dd').text.strip()
+                        car_km = int(car_km.replace('.', '').replace('Km', '').strip())
+
+                    elif data.find('dt').text.strip() == 'Carrocería':
+                        car_bodywork = data.find('dd').text.strip()
+
+                    elif data.find('dt').text.strip() == 'Combustible':
+                        car_fuel = data.find('dd').text.strip()
+
+                    elif data.find('dt').text.strip() == 'Cambio':
+                        car_change = data.find('dd').text.strip()
+
+                    elif data.find('dt').text.strip() == 'Puertas':
+                        car_doors = data.find('dd').text.strip()
+                        car_doors = int(car_doors)
+
+                    elif data.find('dt').text.strip() == 'Plazas':
+                        car_seats = data.find('dd').text.strip()
+                        car_seats = int(car_seats)
+
+                    elif data.find('dt').text.strip() == 'Color exterior':
+                        car_color = data.find('dd').text.strip()
+
+                    elif data.find('dt').text.strip() == 'Garantía':
+                        car_guarantee = data.find('dd').text.strip()
+                        car_guarantee = (True, int(car_guarantee.replace('meses', '').strip()))
 
             car_description = soup_info.find('div', {'class': 'descripcion'})
 
@@ -259,8 +368,10 @@ def extract_cars_motor_es(num_pages=3):
 
             res.append({
                 'title': car_title,
+                'brand': car_title.split(' ')[0].upper(),
                 'url': car_url,
                 'img': car_img,
+                'province': car_province,
                 'spot_price': car_spot_price,
                 'financed_price': car_financed_price,
                 'registration': car_registration,
@@ -271,7 +382,8 @@ def extract_cars_motor_es(num_pages=3):
                 'power': car_power,
                 'guarantee': car_guarantee,
                 'color': car_color,
-                'environmental_label': car_environmental_label,
+                'doors': car_doors,
+                'seats': car_seats,
                 'description': car_description
             })                    
 
