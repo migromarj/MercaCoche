@@ -5,6 +5,10 @@
 __pycache__
 /db.sqlite3
 media
+/**/migrations/*.py
+
+#  Whoosh  #
+/Index
 
 # Backup files #
 *.bak
