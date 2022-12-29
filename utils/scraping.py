@@ -19,6 +19,7 @@ def extract_cars_autocasion(num_pages=3):
     
     options = webdriver.ChromeOptions()
     options.headless = True
+    options.add_argument("--log-level=3")
 
     browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
@@ -68,7 +69,10 @@ def extract_cars_autocasion(num_pages=3):
 
             car_bodywork = basic_data[3].find('span').text.strip()
             car_change = basic_data[4].find('span').text.strip()
-            car_power = int(basic_data[5].find('span').text.strip())
+            try:
+                car_power = int(basic_data[5].find('span').text.strip())
+            except:
+                car_power = None
 
             car_guarantee = basic_data[6].find('span').text.strip()
 
@@ -77,7 +81,7 @@ def extract_cars_autocasion(num_pages=3):
             else:
                 car_guarantee = (False, 0)
 
-            car_color = basic_data[7].find('span').text.strip()
+            car_color = basic_data[7].find('span').text.split('/')[0].split('(')[0].strip().lower()
 
             blocks_data = soup_info.find('section', {'class': 'col-izq'}).find_all('div', {'class': 'bloque'})
 
@@ -186,7 +190,11 @@ def extract_cars_coches_com(num_pages=3):
                 car_registration = datetime.date(int(car_registration), 1, 1)
 
             car_power = basic_data[1].find('p', {'class':'cc-car-overview__text'}).text.strip()
-            car_power = int(car_power.split('CV')[0].strip())
+            
+            try:
+                car_power = int(car_power.split('CV')[0].strip())
+            except:
+                car_power = None
 
             car_km = basic_data[2].find('p', {'class':'cc-car-overview__text'}).text.strip()
 
@@ -197,7 +205,7 @@ def extract_cars_coches_com(num_pages=3):
 
             car_fuel = basic_data[3].find('p', {'class':'cc-car-overview__text'}).text.strip()
             car_change = basic_data[5].find('p', {'class':'cc-car-overview__text'}).text.strip()
-            car_color = basic_data[7].find('p', {'class':'cc-car-overview__text'}).text.strip()
+            car_color = basic_data[7].find('p', {'class':'cc-car-overview__text'}).text.split('/')[0].split('(')[0].strip().lower()
             car_guarantee = basic_data[8].find('p', {'class':'cc-car-overview__text'}).text.strip()
 
             if car_guarantee.strip() == 'SÍ':
@@ -323,43 +331,52 @@ def extract_cars_motor_es(num_pages=3):
 
             for data in basic_data:
 
-                if data.find('dd') != None and data.find('dd').text.strip() != '-':
+                data_dd_content = data.find('dd')
+
+                if data_dd_content != None and data_dd_content.text.strip() != '-':
                     if data.find('dt').text.strip() == 'Matriculación':
-                        car_registration = data.find('dd').text.strip()
+                        car_registration = data_dd_content.text.strip()
                         aux = car_registration.split('/')
-                        car_registration = datetime.date(int(aux[1]), int(aux[0]), 1)
+
+                        month = aux[0]
+                        try :
+                            month = int(month)
+                        except:
+                            month = 1
+
+                        car_registration = datetime.date(int(aux[1]), month, 1)
 
                     elif data.find('dt').text.strip() == 'Potencia':
-                        car_power = data.find('dd').text.strip()
+                        car_power = data_dd_content.text.strip()
                         car_power = int(car_power.split(' ')[0])
 
                     elif data.find('dt').text.strip() == 'Kilómetros':
-                        car_km = data.find('dd').text.strip()
+                        car_km = data_dd_content.text.strip()
                         car_km = int(car_km.replace('.', '').replace('Km', '').strip())
 
                     elif data.find('dt').text.strip() == 'Carrocería':
-                        car_bodywork = data.find('dd').text.strip()
+                        car_bodywork = data_dd_content.text.strip()
 
                     elif data.find('dt').text.strip() == 'Combustible':
-                        car_fuel = data.find('dd').text.strip()
+                        car_fuel = data_dd_content.text.strip()
 
                     elif data.find('dt').text.strip() == 'Cambio':
-                        car_change = data.find('dd').text.strip()
+                        car_change = data_dd_content.text.strip()
 
                     elif data.find('dt').text.strip() == 'Puertas':
-                        car_doors = data.find('dd').text.strip()
+                        car_doors = data_dd_content.text.strip()
                         car_doors = int(car_doors)
 
                     elif data.find('dt').text.strip() == 'Plazas':
-                        car_seats = data.find('dd').text.strip()
+                        car_seats = data_dd_content.text.strip()
                         car_seats = int(car_seats)
 
                     elif data.find('dt').text.strip() == 'Color exterior':
-                        car_color = data.find('dd').text.strip()
+                        car_color = data_dd_content.text.split('/')[0].split('(')[0].strip().lower()
 
                     elif data.find('dt').text.strip() == 'Garantía':
-                        car_guarantee = data.find('dd').text.strip()
-                        car_guarantee = (True, int(car_guarantee.replace('meses', '').strip()))
+                        car_guarantee = data_dd_content.text.strip()
+                        car_guarantee = (True, int(car_guarantee.replace('meses', '').split('(')[0].strip()))
 
             car_description = soup_info.find('div', {'class': 'descripcion'})
 
