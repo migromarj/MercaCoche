@@ -1,10 +1,16 @@
 import os, shutil
+from main.models import Car, WebUser
 from whoosh.index import create_in,open_dir
 from whoosh.fields import Schema, TEXT, KEYWORD, NUMERIC, ID
-from scraping import extract_cars_autocasion, extract_cars_coches_com, extract_cars_motor_es
+from utils.scraping import extract_cars_autocasion, extract_cars_coches_com, extract_cars_motor_es
 
-def store_data_whoosh(ids, cars):
+def populate_db_and_create_index(ids, all_cars):
     
+    WebUser.objects.all().delete()
+    Car.objects.all().delete()
+
+    cars = {}
+
     schem = Schema(id = ID(),
                     title = TEXT(stored=True,phrase=False),
                     brand = ID(stored=True),
@@ -23,10 +29,22 @@ def store_data_whoosh(ids, cars):
     ix = create_in("Index", schema=schem)
     
     writer = ix.writer()
-    
-    for i in range(0,len(cars)):
 
-        car = cars[i]
+    for i in range(0, len(ids)):
+
+        car = all_cars[i]
+        
+        cars[ids[i]] = Car(id = ids[i],
+                        url = car['url'],
+                        image = car['img'],
+                        description = car['description'],
+                        financed_price = car['financed_price'],
+                        registration = car['registration'],
+                        bodywork = car['bodywork'],
+                        change = car['change'],
+                        has_guarantee = car['guarantee'][0],
+                        guarantee_time = car['guarantee'][1],
+                        doors = car['doors'])
 
         writer.add_document(id = str(ids[i]),
                             title = car['title'],
@@ -38,18 +56,8 @@ def store_data_whoosh(ids, cars):
                             power = car['power'],
                             color = car['color'],
                             seats = car['seats'])
- 
+    
+    Car.objects.bulk_create(cars.values())
     writer.commit()
-    print("Fin de indexado. Se han indexado " + str(len(cars)) + " coches.")    
 
-def create_whoosh_index(autocasion_pages = 3, coches_com_pages = 3, motor_es_pages = 3):
-
-    autocasion_cars = extract_cars_autocasion(autocasion_pages)
-    coches_com_cars = extract_cars_coches_com(coches_com_pages)
-    motor_es_cars = extract_cars_motor_es(motor_es_pages)
-
-    all_cars = autocasion_cars + coches_com_cars + motor_es_cars
-
-    ids = [i for i in range(0,len(all_cars))]
-
-    store_data_whoosh(ids, all_cars)
+    print("Fin de carga e indexado. Se han cargado e indexado " + str(len(cars)) + " coches.")
