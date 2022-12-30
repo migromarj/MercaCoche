@@ -1,7 +1,7 @@
 import os, shutil
 from main.models import Car, WebUser
 from whoosh.index import create_in,open_dir
-from whoosh.fields import Schema, TEXT, KEYWORD, NUMERIC, ID
+from whoosh.fields import Schema, TEXT, KEYWORD, NUMERIC, ID, STORED
 from utils.scraping import extract_cars_autocasion, extract_cars_coches_com, extract_cars_motor_es
 
 def populate_db_and_create_index(ids, all_cars):
@@ -11,8 +11,9 @@ def populate_db_and_create_index(ids, all_cars):
 
     cars = {}
 
-    schem = Schema(id = ID(),
+    schem = Schema(id = ID(stored=True),
                     title = TEXT(stored=True,phrase=False),
+                    image = STORED(),
                     brand = ID(stored=True),
                     province = ID(stored=True),
                     spot_price = NUMERIC(stored=True, numtype=float),
@@ -36,7 +37,6 @@ def populate_db_and_create_index(ids, all_cars):
         
         cars[ids[i]] = Car(id = ids[i],
                         url = car['url'],
-                        image = car['img'],
                         description = car['description'],
                         financed_price = car['financed_price'],
                         registration = car['registration'],
@@ -48,6 +48,7 @@ def populate_db_and_create_index(ids, all_cars):
 
         writer.add_document(id = str(ids[i]),
                             title = car['title'],
+                            image = car['img'],
                             brand = car['brand'],
                             province = car['province'],
                             spot_price = car['spot_price'],

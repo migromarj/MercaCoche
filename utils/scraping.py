@@ -24,9 +24,24 @@ def extract_cars_autocasion(num_pages=3):
     browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
     for page in range(0, num_pages):
-
+       
         browser.get(url + "?page=" + str(page + 1))
-        time.sleep(5)
+
+        height = browser.execute_script("return document.body.scrollHeight")
+        
+        n_scrolls = height // 200
+
+        scroll_position = 0
+
+        for i in range(n_scrolls):
+          
+            browser.execute_script("window.scrollTo(" + str(scroll_position) + "," + str(scroll_position + 200) + ");")
+
+            scroll_position += 200
+            time.sleep(0.5)
+
+        browser.implicitly_wait(10)
+
         response = browser.page_source
 
         soup = BeautifulSoup(response, "lxml")
@@ -82,6 +97,8 @@ def extract_cars_autocasion(num_pages=3):
                 car_guarantee = (False, 0)
 
             car_color = basic_data[7].find('span').text.split('/')[0].split('(')[0].strip().lower()
+            if car_color == '-':
+                car_color = None
 
             blocks_data = soup_info.find('section', {'class': 'col-izq'}).find_all('div', {'class': 'bloque'})
 
@@ -179,8 +196,10 @@ def extract_cars_coches_com(num_pages=3):
             
             car_info_request = urllib.request.urlopen(car_url)
             soup_info = BeautifulSoup(car_info_request, "lxml")
-            basic_data = soup_info.find('div', {'class': 'cc-car-overview cc-car-overview--r'}).find_all('div', {'class':'cc-car-overview__block'})
-
+            try:
+                basic_data = soup_info.find('div', {'class': 'cc-car-overview cc-car-overview--r'}).find_all('div', {'class':'cc-car-overview__block'})
+            except:
+                continue
             car_registration = basic_data[0].find('p', {'class':'cc-car-overview__text'}).text.strip()
 
             if "/" in car_registration:
@@ -206,6 +225,9 @@ def extract_cars_coches_com(num_pages=3):
             car_fuel = basic_data[3].find('p', {'class':'cc-car-overview__text'}).text.strip()
             car_change = basic_data[5].find('p', {'class':'cc-car-overview__text'}).text.strip()
             car_color = basic_data[7].find('p', {'class':'cc-car-overview__text'}).text.split('/')[0].split('(')[0].strip().lower()
+            if car_color == '-':
+                car_color = None
+
             car_guarantee = basic_data[8].find('p', {'class':'cc-car-overview__text'}).text.strip()
 
             if car_guarantee.strip() == 'SÍ':
@@ -258,6 +280,12 @@ def extract_cars_motor_es(num_pages=3):
     url = 'https://www.motor.es/coches-segunda-mano/'
     res = []
 
+    options = webdriver.ChromeOptions()
+    options.headless = True
+    options.add_argument("--log-level=3")
+
+    browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+
     for page in range(0, num_pages):
 
         request = urllib.request.Request(url + '?pagina=' + str(page + 1) , headers={'User-Agent': 'Mozilla/5.0'})
@@ -272,8 +300,6 @@ def extract_cars_motor_es(num_pages=3):
         for car in cars:
             
             car_url = car.find('a', {'class':'link boton coche-link'})['href']
-
-            car_img = car.find('img')['src']
 
             car_info = car.find('span', {'class': 'datos'})
 
@@ -311,11 +337,12 @@ def extract_cars_motor_es(num_pages=3):
                 except:
                     car_financed_price = None
 
-            request = urllib.request.Request(car_url , headers={'User-Agent': 'Mozilla/5.0'})
+            browser.get(car_url)
+            response = browser.page_source
 
-            webpage = urllib.request.urlopen(request).read()
-            soup_info = BeautifulSoup(webpage, "html.parser")
-            
+            soup_info = BeautifulSoup(response, "html.parser")
+            car_img = soup_info.find('figure',{'class':'carrusel-modelo'}).find('img')['src']
+         
             basic_data = soup_info.find('section', {'class': 'zona-contenido ficha ancho-principal'}).find_all('div')
 
             car_registration = None
@@ -403,5 +430,7 @@ def extract_cars_motor_es(num_pages=3):
                 'seats': car_seats,
                 'description': car_description
             })                    
+
+    browser.quit()
 
     return res
