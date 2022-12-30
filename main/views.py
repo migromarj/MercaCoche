@@ -68,9 +68,14 @@ def register(request):
     if 'last_name' in errors:
         errors['Apellido'] = errors['last_name']
         del errors['last_name']
+    if 'username' in errors:
+        errors['Nombre de usuario'] = errors['username']
+        del errors['username']
     if 'email' in errors:
         errors['Email'] = errors['email']
         del errors['email']
+        if errors['Email'] == 'Ya existe %(model_name)s con este %(field_label)s.':
+            errors['Email'] = 'Ya existe un usuario con este email.'
     if 'password1' in errors:
         errors['Contraseña'] = errors['password1']
         del errors['password1']
@@ -78,4 +83,4 @@ def register(request):
         errors['Confirmar contraseña'] = errors['password2']
         del errors['password2']
 
-    return render(request, "register.html", {"form": form, "messages": errors})
+    return render(request, "registration/register.html", {"form": form, "messages": errors})
