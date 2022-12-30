@@ -4,6 +4,10 @@ from utils.whoosh_and_db import populate_db_and_create_index
 from main.models import Car
 from whoosh.index import open_dir
 import os
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from main.forms import RegisterForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -44,3 +48,34 @@ def load_data(request):
         cars_index = list(cars_index)
 
     return render(request, 'index.html', {"cars": cars_index})
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/")
+    else:
+        form = RegisterForm()
+        
+    errors = form.errors
+    errors = errors.as_data()
+    errors = {k: v[0].message for k, v in errors.items()}
+
+    if 'first_name' in errors:
+        errors['Nombre'] = errors['first_name']
+        del errors['first_name']
+    if 'last_name' in errors:
+        errors['Apellido'] = errors['last_name']
+        del errors['last_name']
+    if 'email' in errors:
+        errors['Email'] = errors['email']
+        del errors['email']
+    if 'password1' in errors:
+        errors['Contraseña'] = errors['password1']
+        del errors['password1']
+    if 'password2' in errors:
+        errors['Confirmar contraseña'] = errors['password2']
+        del errors['password2']
+
+    return render(request, "register.html", {"form": form, "messages": errors})

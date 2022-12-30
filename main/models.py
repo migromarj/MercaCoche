@@ -12,7 +12,7 @@ class WebUser(AbstractUser):
     favorite_cars = models.ManyToManyField('Car', related_name='favorite_cars')
 
     def __str__(self):
-        return self.email
+        return str(self.email)
     
 class Car(models.Model):
 
@@ -29,4 +29,4 @@ class Car(models.Model):
     doors = models.SmallIntegerField(verbose_name='Número de puertas', null=True)
     
     def __str__(self):
-        return self.id
+        return str(self.id)

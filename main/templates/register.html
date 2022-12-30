@@ -1,0 +1,39 @@
+{% extends 'master.html' %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/register.css' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+{% block titulo %} Registro {% endblock %}
+
+{% block contenido %}
+
+<div class="register-wrapper">
+    <h1 class="title">
+        Registro
+    </h1>
+    <hr class="line-break">
+
+    {% if messages %}
+    <ul class="messages alert alert-warning" role="alert">
+        {% for key, value in messages.items %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ key }} - {{ value }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="register-layout">
+        <div class="register-container">
+            <form method="POST" action="{% url 'register' %}" class="register-form" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" id="id_submit_button" type="submit">Regístrate</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
