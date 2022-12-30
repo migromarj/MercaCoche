@@ -1,0 +1,22 @@
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/car.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <h1 class="title">
+        Página principal
+    </h1>
+    <hr class="line-break">
+
+    <div class="cars-container">
+        {% if cars %}
+            {% for c in cars %}
+                {% include 'components/car_card.html' with car=c %}
+            {% endfor %}
+        {% else %}
+            <h3 class="no-car-text">En este momento no hay coches almacenados en el sistema.</h3>
+        {% endif %}
+    </div>
+</body>

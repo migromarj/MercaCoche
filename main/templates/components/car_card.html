@@ -1,0 +1,17 @@
+<div class="car-card" href="#">
+    <a href="#">
+        <div class="car-title">
+            {{ car.title }}
+        </div>
+        <div class="image-card">
+            <img class="car-image" src={{car.image}}>
+        </div>
+    </a>
+    <div class="car-info">
+        <span class="block-info btn btn-outline-dark btn-sm disabled mr-5">{{ car.province }}</span> &nbsp;
+        {% load humanize %}
+        <span class="block-info btn btn-outline-dark btn-sm disabled">{{ car.km|intcomma }} km</span> &nbsp;
+        <span class="block-info btn btn-outline-dark btn-sm disabled">{{ car.spot_price|intcomma }} €</span>
+    </div>
+
+</div>

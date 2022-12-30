@@ -3,8 +3,8 @@
 {% block titulo %} Página inicial {% endblock %}
 
 {% block contenido %} 
-		<hr>
-		<h5>Esta es la página de inicio</h5>	    
-		<hr>
+		<div class="car-list-wrapper">
+			{% include "components/car_list.html" with cars=cars %}
+		</div>
 
 {% endblock %}
