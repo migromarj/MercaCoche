@@ -24,4 +24,5 @@ urlpatterns = [
     path('load_data/', views.load_data),
     path('register/', views.register, name="register"),
     path("", include("django.contrib.auth.urls")),
+    path("car_details/<int:id>", views.car_details, name="car_details"),
 ]
