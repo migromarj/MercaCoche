@@ -1,5 +1,5 @@
 <div class="car-card" href="#">
-    <a href="#">
+    <a href="{% url 'car_details' car.id %}">
         <div class="car-title">
             {{ car.title }}
         </div>
@@ -8,10 +8,10 @@
         </div>
     </a>
     <div class="car-info">
-        <span class="block-info btn btn-outline-dark btn-sm disabled mr-5">{{ car.province }}</span> &nbsp;
+        <span class="block-info btn btn-light btn-sm border border-dark disabled mr-5">{{ car.province }}</span> &nbsp;
         {% load humanize %}
-        <span class="block-info btn btn-outline-dark btn-sm disabled">{{ car.km|intcomma }} km</span> &nbsp;
-        <span class="block-info btn btn-outline-dark btn-sm disabled">{{ car.spot_price|intcomma }} €</span>
+        <span class="block-info btn btn-light btn-sm border border-dark disabled">{{ car.km|intcomma }} km</span> &nbsp;
+        <span class="block-info btn btn-light btn-sm border border-dark disabled">{{ car.spot_price|intcomma }} €</span>
     </div>
 
 </div>

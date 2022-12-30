@@ -84,3 +84,12 @@ def register(request):
         del errors['password2']
 
     return render(request, "registration/register.html", {"form": form, "messages": errors})
+
+def car_details(request, id):
+    car_db = Car.objects.get(id=id)
+    car_index = None
+    if os.path.exists("Index"):
+        ix = open_dir("Index")
+        car_index = ix.searcher().document(id=str(id))
+
+    return render(request, "car_details.html", {"car_db": car_db, "car_index": car_index})
