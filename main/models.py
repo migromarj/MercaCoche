@@ -8,11 +8,11 @@ class WebUser(AbstractUser):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(verbose_name='Nombre', max_length=150)
     last_name = models.CharField(verbose_name='Apellido', max_length=150)
-    email = models.EmailField(verbose_name='Email', max_length=50, unique=True)
+    email = models.EmailField(verbose_name='Email', max_length=254, unique=True)
     favorite_cars = models.ManyToManyField('Car', related_name='favorite_cars')
 
     def __str__(self):
-        return self.email
+        return str(self.username)
     
 class Car(models.Model):
 
@@ -29,4 +29,4 @@ class Car(models.Model):
     doors = models.SmallIntegerField(verbose_name='Número de puertas', null=True)
     
     def __str__(self):
-        return self.id
+        return str(self.id)
