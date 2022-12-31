@@ -28,4 +28,6 @@ urlpatterns = [
     path("add_favorite/<int:id>", views.add_favorite, name="add_favorite"),
     path("remove_favorite/<int:id>", views.remove_favorite, name="remove_favorite"),
     path("favorites/", views.favorites, name="favorites"),
+    path("search_title/", views.search_by_title, name="search_car_by_title"),
+    path("search_by_specifications/", views.search_by_specifications, name="search_car_by_specifications"),
 ]

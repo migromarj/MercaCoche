@@ -1,0 +1,17 @@
+<div class="form-select-container">
+    <label for={{name}} class="btn btn-warning">{{ label }}</label>
+    <select class="form-control form-control-select" id={{name}} name={{name}}>
+        {% if selected == "anyone" %}
+        <option value="anyone" selected>Cualquiera</option>
+        {% else %}
+        <option value="anyone">Cualquiera</option>
+        {% endif %}
+        {% for i in items %}
+        {% if selected == i %}
+        <option value="{{ i }}" selected>{{ i|title }}</option>
+        {% else %}
+        <option value="{{ i }}">{{ i|title }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>

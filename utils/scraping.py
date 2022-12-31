@@ -6,6 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import time
 import datetime
+from utils.aux_functions import unidecode_values
 
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
@@ -124,6 +125,9 @@ def extract_cars_autocasion(num_pages=3):
                     if h2.text == 'Descripción':
                         car_description = block.find('div', {'class':'comentarios'}).text.strip()
                         break
+
+
+            car_province, car_fuel, car_color = unidecode_values(car_province, car_fuel, car_color)
 
             res.append({
                 'title': car_title,
@@ -250,6 +254,8 @@ def extract_cars_coches_com(num_pages=3):
                 car_bodywork = data_sheet[9].find('div', {'class':'index-card__technical-data-info'}).text.strip()
 
             car_description = soup_info.find('div', {'id': 'indexCardVehicleDescription'}).find('div', {'class':'index-card__info-text'}).find('div').text.strip()
+
+            car_province, car_fuel, car_color = unidecode_values(car_province, car_fuel, car_color)
 
             res.append({
                 'title': car_title,
@@ -409,6 +415,8 @@ def extract_cars_motor_es(num_pages=3):
 
             if car_description != None:
                 car_description = car_description.text.strip()
+
+            car_province, car_fuel, car_color = unidecode_values(car_province, car_fuel, car_color)
 
             res.append({
                 'title': car_title,
