@@ -1,0 +1,15 @@
+<div class="form-min-max-container">
+    <label for={{name}} class="btn btn-warning">{{ label }}</label>
+    <div class="form-min-max">
+        <label for={{name}}>Desde</label>
+        <div class="input-group">
+            <input type="number" class="form-control" id={{name}} name={{name}}-min min={{min}} max={{max}} value={{selected_min}} aria-describedby="min-addon" required>
+            <span class="input-group-text" id="min-addon"> {{ unit }} </span>
+        </div>
+        <label for={{name}} class="max-label">Hasta</label>
+        <div class="input-group">
+            <input type="number" class="form-control" id={{name}} name={{name}}-max min={{min}} max={{max}} value={{selected_max}} aria-describedby="max-addon" required>
+            <span class="input-group-text" id="max-addon"> {{ unit }} </span>
+        </div>
+    </div>
+</div>
