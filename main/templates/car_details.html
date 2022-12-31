@@ -14,6 +14,19 @@
     <h1 class="title">
         {{ car_index.title }}
     </h1>
+    {% if user.is_authenticated %}
+        {% if favorite %}
+        <div class="heart-button">
+            <a href="{% url 'remove_favorite' car_index.id %}" class="btn btn-danger"><i class="fa fa-heart"></i></a>
+        </div>
+        {% else %}
+            <div class="heart-button">
+                <a href="{% url 'add_favorite' car_index.id %}" class="btn btn-primary"><i class="fa fa-heart"></i></a>
+            </div>
+        {% endif %}
+    {% endif %}
+ 
+    
     <hr class="line-break">
     <div class="container">
         <div class="row">

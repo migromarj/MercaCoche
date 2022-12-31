@@ -92,4 +92,62 @@ def car_details(request, id):
         ix = open_dir("Index")
         car_index = ix.searcher().document(id=str(id))
 
-    return render(request, "car_details.html", {"car_db": car_db, "car_index": car_index})
+    favorite = False
+    if request.user.is_authenticated:
+        user = request.user
+        favorite = user.favorite_cars.filter(id=id).exists()
+
+    return render(request, "car_details.html", {"car_db": car_db, "car_index": car_index, "favorite": favorite})
+
+def add_favorite(request, id):
+    
+    car_db = Car.objects.get(id=id)
+    user = request.user
+    user.favorite_cars.add(car_db)
+    user.save()
+
+    car_index = None
+    if os.path.exists("Index"):
+        ix = open_dir("Index")
+        car_index = ix.searcher().document(id=str(id))
+
+    favorite = False
+    if request.user.is_authenticated:
+        user = request.user
+        favorite = user.favorite_cars.filter(id=id).exists()
+
+    return render(request, "car_details.html", {"car_db": car_db, "car_index": car_index, "favorite": favorite})
+
+def remove_favorite(request, id):
+
+    car_db = Car.objects.get(id=id)
+    user = request.user
+    user.favorite_cars.remove(car_db)
+    user.save()
+
+    car_index = None
+    if os.path.exists("Index"):
+        ix = open_dir("Index")
+        car_index = ix.searcher().document(id=str(id))
+
+    favorite = False
+    if request.user.is_authenticated:
+        user = request.user
+        favorite = user.favorite_cars.filter(id=id).exists()
+
+    return render(request, "car_details.html", {"car_db": car_db, "car_index": car_index, "favorite": favorite})
+
+def favorites(request):
+    
+    user = request.user
+    favorites_cars = user.favorite_cars.all()
+
+    cars = []
+
+    if os.path.exists("Index"):
+        ix = open_dir("Index")
+        for car in favorites_cars:
+            car_index = ix.searcher().document(id=str(car.id))
+            cars.append(car_index)
+
+    return render(request, "favorite_cars.html", {"cars": cars})
