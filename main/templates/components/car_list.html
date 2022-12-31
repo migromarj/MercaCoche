@@ -6,7 +6,7 @@
 
 <body>
     <h1 class="title">
-        Página principal
+        {{ title }}
     </h1>
     <hr class="line-break">
 
@@ -16,7 +16,7 @@
                 {% include 'components/car_card.html' with car=c %}
             {% endfor %}
         {% else %}
-            <h3 class="no-car-text">En este momento no hay coches almacenados en el sistema.</h3>
+            <h3 class="no-car-text">{{ message }}</h3>
         {% endif %}
     </div>
 </body>

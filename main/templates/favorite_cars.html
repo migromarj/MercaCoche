@@ -1,0 +1,10 @@
+{% extends 'master.html' %}
+
+{% block titulo %} Coches favoritos {% endblock %}
+
+{% block contenido %} 
+		<div class="car-list-wrapper">
+			{% include "components/car_list.html" with title="Coches favoritos" cars=cars message="En este momento no tienes coches favoritos."%}
+		</div>
+
+{% endblock %}

@@ -25,4 +25,7 @@ urlpatterns = [
     path('register/', views.register, name="register"),
     path("", include("django.contrib.auth.urls")),
     path("car_details/<int:id>", views.car_details, name="car_details"),
+    path("add_favorite/<int:id>", views.add_favorite, name="add_favorite"),
+    path("remove_favorite/<int:id>", views.remove_favorite, name="remove_favorite"),
+    path("favorites/", views.favorites, name="favorites"),
 ]

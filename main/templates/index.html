@@ -4,7 +4,7 @@
 
 {% block contenido %} 
 		<div class="car-list-wrapper">
-			{% include "components/car_list.html" with cars=cars %}
+			{% include "components/car_list.html" with title="Página principal" cars=cars message="En este momento no hay coches almacenados en el sistema." %}
 		</div>
 
 {% endblock %}
