@@ -3,6 +3,7 @@ from utils.scraping import extract_cars_autocasion, extract_cars_coches_com, ext
 from utils.whoosh_and_db import populate_db_and_create_index
 from main.models import Car
 from whoosh.index import open_dir
+from whoosh.qparser import QueryParser, OrGroup
 import os
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -151,3 +152,23 @@ def favorites(request):
             cars.append(car_index)
 
     return render(request, "favorite_cars.html", {"cars": cars})
+
+def search_by_title(request):
+    if request.method == "POST":
+        search = request.POST.get("search")
+        cars = []
+        
+        if os.path.exists("Index"):
+            ix = open_dir("Index")
+            with ix.searcher() as searcher:
+
+                if search == "":
+                    cars = ix.searcher().documents()
+                    cars = list(cars)
+                    return render(request, "index.html", {"cars": cars})
+
+                query = QueryParser("title", ix.schema, group=OrGroup).parse(search)
+                cars = searcher.search(query, limit=None)
+                cars = list(cars)
+
+        return render(request, "index.html", {"cars": cars})

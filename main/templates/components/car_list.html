@@ -10,13 +10,26 @@
     </h1>
     <hr class="line-break">
 
+    <!-- Show only in index page -->
+    {% if title == "Página principal" %}
+        <div>
+            <form action="{% url 'search_car_by_title' %}" method="POST" class="form-search">
+                {% csrf_token %}
+                <input type="text" name="search" placeholder="Buscar coche" class="form-control form-input">
+                <input type="hidden" name="cars" value="{{ cars }}">
+                &nbsp;
+                &nbsp;  
+                <button type="submit" class="btn btn-success">Buscar</button>
+            </form>
+        </div>
+    {% endif %}
     <div class="cars-container">
         {% if cars %}
-            {% for c in cars %}
-                {% include 'components/car_card.html' with car=c %}
-            {% endfor %}
+        {% for c in cars %}
+        {% include 'components/car_card.html' with car=c %}
+        {% endfor %}
         {% else %}
-            <h3 class="no-car-text">{{ message }}</h3>
+        <h3 class="no-car-text">{{ message }}</h3>
         {% endif %}
     </div>
 </body>
