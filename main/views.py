@@ -184,6 +184,7 @@ def search_by_specifications(request):
     fuels = []
     colors = []
     seats = []
+    orders = ['Sin ordenación', 'Ascendente por km', 'Descendente por km', 'Ascendente por precio', 'Descendente por precio']
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
@@ -211,7 +212,8 @@ def search_by_specifications(request):
         province = request.POST.get("province")
         fuel = request.POST.get("fuel")
         color = request.POST.get("color")
-        seats = request.POST.get("seats")
+        seat = request.POST.get("seats")
+        order = request.POST.get("order")
 
         km_min = request.POST.get("km-min")
         km_max = request.POST.get("km-max")
@@ -238,8 +240,8 @@ def search_by_specifications(request):
                 if color != "anyone":
                     search.append(query.Term("color", color))
 
-                if seats != "anyone":
-                    search.append(query.Term("seats", seats))
+                if seat != "anyone":
+                    search.append(query.Term("seats", seat))
 
                 range_filters = [
                     query.NumericRange("km", km_min, km_max),
@@ -247,11 +249,20 @@ def search_by_specifications(request):
                     query.NumericRange("power", power_min, power_max)
                 ]
 
-                print(search + range_filters)
-
                 q = query.And(search + range_filters)
 
-                results = searcher.search(q, limit=None)
+                if order == "Sin ordenación":
+                    results = searcher.search(q, limit=None)
+
+                else:
+                    if order == "Ascendente por km":
+                        results = searcher.search(q, sortedby='km', reverse=False, limit=None)
+                    elif order == "Descendente por km":
+                        results = searcher.search(q, sortedby='km', reverse=True, limit=None)
+                    elif order == "Ascendente por precio":
+                        results = searcher.search(q, sortedby='spot_price', reverse=False, limit=None)
+                    else:
+                        results = searcher.search(q, sortedby='spot_price', reverse=True, limit=None)
 
                 return render(request, 'specific_cars.html', {"cars": results, 
                                                 "brands": sorted(brands), 
@@ -259,11 +270,13 @@ def search_by_specifications(request):
                                                 "fuels": sorted(fuels), 
                                                 "colors": sorted(colors), 
                                                 "seats": sorted(seats),
+                                                "orders": orders,
                                                 "selected_brand": brand,
                                                 "selected_province": province,
                                                 "selected_fuel": fuel,
                                                 "selected_color": color,
-                                                "selected_seats": seats,
+                                                "selected_seats": int(seat),
+                                                "selected_order": order,
                                                 "selected_km_min": km_min,
                                                 "selected_km_max": km_max,
                                                 "selected_price_min": price_min,
@@ -280,6 +293,7 @@ def search_by_specifications(request):
                                                 "fuels": sorted(fuels), 
                                                 "colors": sorted(colors), 
                                                 "seats": sorted(seats),
+                                                "orders": orders,
                                                 "selected_km_min": 0,
                                                 "selected_km_max": 300000,
                                                 "selected_price_min": 0,
@@ -294,4 +308,11 @@ def search_by_specifications(request):
                                                 "fuels": sorted(fuels), 
                                                 "colors": sorted(colors), 
                                                 "seats": sorted(seats),
+                                                "orders": orders,
+                                                "selected_km_min": 0,
+                                                "selected_km_max": 300000,
+                                                "selected_price_min": 0,
+                                                "selected_price_max": 100000,
+                                                "selected_power_min": 0,
+                                                "selected_power_max": 500,
                                                 })

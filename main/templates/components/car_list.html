@@ -29,8 +29,11 @@
                     {% include 'components/form_select.html' with label="Marca" name="brand" items=brands selected=selected_brand %}
                     {% include 'components/form_select.html' with label="Provincia" name="province" items=provinces selected=selected_province %}
                     {% include 'components/form_select.html' with label="Combustible" name="fuel" items=fuels selected=selected_fuel %}
+                </div>
+                <div class="form-group">
                     {% include 'components/form_select.html' with label="Colores" name="color" items=colors selected=selected_color %}
                     {% include 'components/form_select.html' with label="Número de plazas" name="seats" items=seats selected=selected_seats %}
+                    {% include 'components/form_select.html' with label="Ordenación" name="order" items=orders selected=selected_order %}
                 </div>
                 <div class="form-group-min-max">
                     {% include 'components/form_min_max.html' with label="Kilómetros" name="km" min=0 max=500000 unit="km" selected_min=selected_km_min selected_max=selected_km_max %}
