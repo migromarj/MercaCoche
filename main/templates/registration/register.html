@@ -3,12 +3,11 @@
 {% block head %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/register.css' %}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock %}
 
-{% block titulo %} Registro {% endblock %}
+{% block title %} Registro {% endblock %}
 
-{% block contenido %}
+{% block content %}
 
 <div class="register-wrapper">
     <h1 class="title">
@@ -19,9 +18,9 @@
     {% if messages %}
     <ul class="messages alert alert-warning" role="alert">
         {% for key, value in messages.items %}
-            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                {{ key }} - {{ value }}
-            </li>
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {{ key }} - {{ value }}
+        </li>
         {% endfor %}
     </ul>
     {% endif %}

@@ -3,35 +3,34 @@
 {% block head %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/car_details.css' %}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 {% load humanize %}
 {% endblock %}
 
-{% block titulo %} Detalles de coche {% endblock %}
+{% block title %} Detalles de coche {% endblock %}
 
-{% block contenido %}
+{% block content %}
 <div class="car_details-wrapper">
     <h1 class="title">
         {{ car_index.title }}
     </h1>
     {% if user.is_authenticated %}
-        {% if favorite %}
-        <div class="heart-button">
-            <a href="{% url 'remove_favorite' car_index.id %}" class="btn btn-danger"><i class="fa fa-heart"></i></a>
-        </div>
-        {% else %}
-            <div class="heart-button">
-                <a href="{% url 'add_favorite' car_index.id %}" class="btn btn-primary"><i class="fa fa-heart"></i></a>
-            </div>
-        {% endif %}
+    {% if favorite %}
+    <div class="heart-button">
+        <a href="{% url 'remove_favorite' car_index.id %}" class="btn btn-danger"><i class="fa fa-heart"></i></a>
+    </div>
+    {% else %}
+    <div class="heart-button">
+        <a href="{% url 'add_favorite' car_index.id %}" class="btn btn-primary"><i class="fa fa-heart"></i></a>
+    </div>
     {% endif %}
- 
-    
+    {% endif %}
+
+
     <hr class="line-break">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <img class="car_details-image" src="{{car_index.image}}">
+                <img class="car_details-image" src="{{car_index.image}}" alt="Imagen del coche en venta">
             </div>
             <div class="col-md-6">
                 <p class="car_details-description">
@@ -59,7 +58,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -68,10 +69,11 @@
                         <div class="col-6">
                             <h3 class="btn btn-primary disabled">{{ car_index.spot_price|intcomma }} €</h3>
                         </div>
-
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -87,7 +89,9 @@
                     </div>
                 </div>
             </div>
-            <span class="hr-center"><hr class="car_details-info"></span>
+            <span class="hr-center">
+                <hr class="car_details-info">
+            </span>
             <div class="row">
                 <div class="col-md-4">
                     <div class="row">
@@ -103,7 +107,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -118,7 +124,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -134,7 +142,9 @@
                     </div>
                 </div>
             </div>
-            <span class="hr-center"><hr class="car_details-info"></span>
+            <span class="hr-center">
+                <hr class="car_details-info">
+            </span>
             <div class="row">
                 <div class="col-md-4">
                     <div class="row">
@@ -150,7 +160,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -165,7 +177,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -181,7 +195,9 @@
                     </div>
                 </div>
             </div>
-            <span class="hr-center"><hr class="car_details-info"></span>
+            <span class="hr-center">
+                <hr class="car_details-info">
+            </span>
             <div class="row">
                 <div class="col-md-4">
                     <div class="row">
@@ -197,7 +213,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -210,10 +228,11 @@
                             <h3 class="btn btn-primary disabled">-</h3>
                             {% endif %}
                         </div>
-
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -229,7 +248,9 @@
                     </div>
                 </div>
             </div>
-            <span class="hr-center"><hr class="car_details-info"></span>
+            <span class="hr-center">
+                <hr class="car_details-info">
+            </span>
             <div class="row">
                 <div class="col-md-4">
                     <div class="row">
@@ -245,7 +266,9 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -258,10 +281,11 @@
                             <h3 class="btn btn-primary disabled">-</h3>
                             {% endif %}
                         </div>
-
                     </div>
                 </div>
-                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                <span class="hr-center responsive">
+                    <hr class="car_details-info">
+                </span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">

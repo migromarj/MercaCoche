@@ -1,17 +1,16 @@
-<div class="car-card" href="#">
+<div class="car-card">
     <a href="{% url 'car_details' car.id %}">
         <div class="car-title">
             {{ car.title }}
         </div>
         <div class="image-card">
-            <img class="car-image" src={{car.image}}>
+            <img class="car-image" src={{car.image}} alt="Imagen de coche en venta">
         </div>
     </a>
     <div class="car-info">
-        <span class="block-info btn btn-light btn-sm border border-dark disabled mr-5">{{ car.province|title }}</span> &nbsp;
+        <span class="block-info btn btn-light btn-sm border border-dark disabled">{{ car.province|title }}</span> &nbsp;
         {% load humanize %}
         <span class="block-info btn btn-light btn-sm border border-dark disabled">{{ car.km|intcomma }} km</span> &nbsp;
         <span class="block-info btn btn-light btn-sm border border-dark disabled">{{ car.spot_price|intcomma }} €</span>
     </div>
-
 </div>

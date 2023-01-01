@@ -1,10 +1,9 @@
 {% extends 'master.html' %}
 
-{% block titulo %} Página inicial {% endblock %}
+{% block title %} Inicio {% endblock %}
 
-{% block contenido %} 
-		<div class="car-list-wrapper">
-			{% include "components/car_list.html" with title="Página principal" cars=cars message="En este momento no hay coches almacenados en el sistema." %}
-		</div>
-
+{% block content %}
+<div class="car-list-wrapper">
+	{% include "components/car_list.html" with title="Inicio" cars=cars message="En este momento no hay coches almacenados en el sistema." %}
+</div>
 {% endblock %}
