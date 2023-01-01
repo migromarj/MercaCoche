@@ -11,6 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 from main.forms import RegisterForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from utils.recommendations import recommend_cars
 
 # Create your views here.
 
@@ -459,3 +460,26 @@ def search_by_specifications(request):
                                                 "selected_power_min": 0,
                                                 "selected_power_max": 500,
                                                 })
+
+def cars_recommendation(request):
+
+    user = request.user
+
+    favorite_cars = list(user.favorite_cars.all())
+
+    cars_index = []
+
+    if os.path.exists("Index"):
+        ix = open_dir("Index")
+        cars_index = list(ix.searcher().documents())
+
+        r_cars = recommend_cars(favorite_cars, cars_index)
+
+        cars = []
+
+        for car in r_cars:
+
+            car_to_add = ix.searcher().document(id=car[0])
+            cars.append(car_to_add)
+
+    return render(request, 'recommend_cars.html', {'cars': cars})
