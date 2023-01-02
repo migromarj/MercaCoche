@@ -8,6 +8,10 @@
     margin-left: 10px;
 }
 
+.navbar-logo{
+    width: 65px;
+}
+
 .navbar-toggler{
     margin-right: 10px;
     border: 1px solid #000000;
