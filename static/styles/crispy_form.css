@@ -1,6 +1,6 @@
-/* register page css */
+/* css associated with the crispy_form component */
 
-.register-wrapper {
+.crispy-wrapper {
     margin-top: 4rem;
     margin-bottom: 4rem;
     margin-inline: 2rem;
@@ -23,17 +23,17 @@ hr.line-break {
     opacity: initial;
 }
 
-.register-layout {
+.crispy-layout {
     display: flex;
     justify-content: center;
 }
 
-.register-container{
+.crispy-container{
     max-width: 100%;
     width: 100%;
 }
 
-.register-form{
+.crispy-form{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,6 +47,14 @@ hr.line-break {
 span.helptext{
     display: none;
 }
+
+.required-fields-crispy{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Register form */
 
 #div_id_first_name{
     width: 100%;
@@ -78,8 +86,31 @@ span.helptext{
     max-width: 300px;
 }
 
-.required-fields-register{
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-weight: 600;
+/* Login form */
+
+#div_id_username{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_password{
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Load data form */
+
+#div_id_autocasion_pages{
+    max-width: 300px;
+    width: 100%;
+}
+
+#div_id_coches_com_pages{
+    max-width: 300px;
+    width: 100%;
+}
+
+#div_id_motor_es_pages{
+    max-width: 300px;
+    width: 100%;
 }

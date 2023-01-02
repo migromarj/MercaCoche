@@ -37,3 +37,7 @@ class SearchTitleForm(forms.Form):
                             ), 
                             max_length=100, 
                             required=False)
+
+class RecommendationsForm(forms.Form):
+
+    num_cars = forms.IntegerField(label="Nº de coches recomendados", min_value=0, max_value=100, initial=12, required=True)

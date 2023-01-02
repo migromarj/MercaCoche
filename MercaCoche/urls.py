@@ -29,5 +29,6 @@ urlpatterns = [
     path("favorites/", views.favorites, name="favorites"),
     path("search_title/", views.search_by_title, name="search_car_by_title"),
     path("search_by_specifications/", views.search_by_specifications, name="search_car_by_specifications"),
-    path("recommend_cars/", views.cars_recommendation, name="recommend_cars")
+    path("number_recommendations/", views.number_recommendations, name="number_recommendations"),
+    path("recommend_cars/<int:n_cars>", views.cars_recommendation, name="recommend_cars")
 ]

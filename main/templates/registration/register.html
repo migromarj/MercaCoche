@@ -1,35 +1,7 @@
 {% extends 'master.html' %}
 
-{% block head %}
-{% load crispy_forms_filters %}
-{% load crispy_forms_tags %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'styles/register.css' %}">
-{% endblock %}
-
 {% block title %} Registro {% endblock %}
 
 {% block content %}
-
-<div class="register-wrapper">
-    <h1 class="title">
-        Registro
-    </h1>
-    <hr class="line-break">
-
-    <div class="register-layout">
-        <div class="register-container">
-            <form method="POST" action="{% url 'register' %}" class="register-form" novalidate>
-                {% csrf_token %}
-                {{ form|crispy }}
-                <p class="required-fields-register">Los campos marcados con * son obligatorios.</p>
-                <button class="btn btn-success" id="id_submit_button" type="submit">Regístrate</button>
-            </form>
-            <br>
-            <div class="register-form">
-                <a href="/login">¿Ya tienes cuenta? ¡Inicia sesión!</a>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'components/crispy_form.html' with type='register' title='Registro' form=form button_label='Regístrate' %}
 {% endblock %}

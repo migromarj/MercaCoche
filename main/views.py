@@ -1,7 +1,7 @@
 import os
 
 from main.models import Car
-from main.forms import RegisterForm, LoadDataForm
+from main.forms import RegisterForm, LoadDataForm, RecommendationsForm
 
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
@@ -177,7 +177,20 @@ def search_by_specifications(request):
         return results_after_search(request, q, order, filters1, filters2)
 
 @login_required(login_url='/login')
-def cars_recommendation(request):
+def number_recommendations(request):
+    
+    if request.method == "POST":
+        form = RecommendationsForm(request.POST)
+        if form.is_valid():
+            num_cars = form.cleaned_data['num_cars']
+            return redirect("/recommend_cars/" + str(num_cars))
+    else:
+        form = RecommendationsForm()
+        
+    return render(request, "number_recommendations.html", {"form": form})
+
+@login_required(login_url='/login')
+def cars_recommendation(request, n_cars):
 
     user = request.user
     favorite_cars = list(user.favorite_cars.all())
@@ -188,10 +201,14 @@ def cars_recommendation(request):
         ix = open_dir("Index")
         cars_index = list(ix.searcher().documents())
 
-        recommended_cars = recommend_cars(favorite_cars, cars_index)
+        recommended_cars = recommend_cars(favorite_cars, cars_index, n_cars)
 
         for car in recommended_cars:
             car_to_add = ix.searcher().document(id=car[0])
             cars.append(car_to_add)
 
-    return render(request, 'recommend_cars.html', {'cars': cars})
+        results = cars_pagination(request, cars)
+
+        
+
+    return render(request, 'recommend_cars.html', {'cars': results, 'n_cars': n_cars})

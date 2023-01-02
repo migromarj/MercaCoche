@@ -108,7 +108,7 @@
         {% endif %}
         {% endif %}
 
-        {% if title == "Coches favoritos" and cars %}
+        {% if title == "Coches favoritos" or title == "Coches recomendados" and cars %}
         {% if cars.has_previous %}
         <a href="?page={{ cars.previous_page_number }}" class="pagination-text">Anterior</a>
         {% endif %}

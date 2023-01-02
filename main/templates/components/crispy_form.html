@@ -1,0 +1,42 @@
+{% block head %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/crispy_form.css' %}">
+{% endblock %}
+
+<div class="crispy-wrapper">
+    <h1 class="title">
+        {{ title }}
+    </h1>
+    <hr class="line-break">
+
+    <div class="crispy-layout">
+        <div class="crispy-container">
+            {% if type == 'register' %}
+            <form method="POST" action="{% url 'register' %}" class="crispy-form">
+            {% elif type == 'login' %}
+            <form method="POST" class="crispy-form">
+            {% elif type == 'load_data' %}
+            <form method="POST" action="{% url 'load_data' %}" class="crispy-form">
+            {% elif type == 'recommendations' %}
+            <form method="POST" action="{% url 'number_recommendations' %}" class="crispy-form">
+            {% endif %}
+                {% csrf_token %}
+                {{ form|crispy }}
+                <p class="required-fields-crispy">Los campos marcados con * son obligatorios.</p>
+                <button class="btn btn-success" id="id_submit_button" type="submit">{{ button_label }}</button>
+            </form>
+            <br>
+            {% if type == 'register' %}
+            <div class="crispy-form">
+                <a href="/login">¿Ya tienes cuenta? ¡Inicia sesión!</a>
+            </div>
+            {% elif type == 'login' %}
+            <div class="crispy-form">
+                <a href="/login">¿Ya tienes cuenta? ¡Inicia sesión!</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
