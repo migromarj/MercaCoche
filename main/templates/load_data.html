@@ -1,0 +1,31 @@
+{% extends 'master.html' %}
+
+{% block head %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/load_data.css' %}">
+{% endblock %}
+
+{% block title %} Cargar datos {% endblock %}
+
+{% block content %}
+
+<div class="load_data-wrapper">
+    <h1 class="title">
+        Cargar datos
+    </h1>
+    <hr class="line-break">
+
+    <div class="load_data-layout">
+        <div class="load_data-container">
+            <form method="POST" action="{% url 'load_data' %}" class="load_data-form" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <p class="required-fields-load_data">Los campos marcados con * son obligatorios.</p>
+                <button class="btn btn-success" id="id_submit_load_data_button" type="submit">Cargar datos</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

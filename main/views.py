@@ -1,7 +1,7 @@
 import os
 
 from main.models import Car
-from main.forms import RegisterForm
+from main.forms import RegisterForm, LoadDataForm
 
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
@@ -39,23 +39,45 @@ def index(request):
 @login_required(login_url='/login')
 def load_data(request):
 
-    autocasion_cars = extract_cars_autocasion(num_pages=3)
-    coches_com_cars = extract_cars_coches_com(num_pages=3)
-    motor_es_cars = extract_cars_motor_es(num_pages=3)
+    if request.method == "POST":
+        form = LoadDataForm(request.POST)
+        if form.is_valid():
+
+            autocasion_pages = form.cleaned_data.get("autocasion_pages")
+            coches_com_pages = form.cleaned_data.get("coches_com_pages")
+            motor_es_pages = form.cleaned_data.get("motor_es_pages")
+
+            cars, n_total_cars, n_autocasion, n_coches_com, n_motor_es = extract_data(autocasion_pages, coches_com_pages, motor_es_pages)
+
+            message = "Se han cargado e indexado " + str(n_total_cars) + " coches. De todos estos " + str(n_autocasion) + " han sido de la página de Autocasion, " + str(n_coches_com) + " de la página de coches.com y " + str(n_motor_es) + " de la página de motor.es."
+
+            return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": SearchTitleForm(), "load_message": message})            
+
+        else:
+            return render(request, "load_data.html", {"form": form})
+
+    else: 
+        form = LoadDataForm()
+        return render(request, "load_data.html", {"form": form})
+
+def extract_data(autocasion_cars_pages, coches_com_cars_pages, motor_es_cars_pages):
+
+    autocasion_cars = extract_cars_autocasion(num_pages=autocasion_cars_pages)
+    coches_com_cars = extract_cars_coches_com(num_pages=coches_com_cars_pages)
+    motor_es_cars = extract_cars_motor_es(num_pages=motor_es_cars_pages)
 
     all_cars = autocasion_cars + coches_com_cars + motor_es_cars
     ids = [i for i in range(len(all_cars))]
 
     populate_db_and_create_index(ids, all_cars)
- 
+
     cars = []
-    title_form = SearchTitleForm()
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
         cars = list(ix.searcher().documents())
 
-    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": title_form})
+    return (cars, len(all_cars), len(autocasion_cars), len(coches_com_cars), len(motor_es_cars))
 
 def register(request):
 

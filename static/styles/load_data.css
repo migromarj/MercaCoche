@@ -1,0 +1,70 @@
+/* load data page css */
+
+.load_data-wrapper {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    margin-inline: 2rem;
+    z-index: 5;
+}
+
+.title {
+    text-align: left;
+    margin-left: 5%;
+}
+
+hr.line-break {
+    border: 1px solid #FAAB78;
+    border-radius: 5px;
+    padding: 2px;
+    margin-bottom: 2.5rem;
+    margin-top: 0;
+    background-color: #FAAB78;
+    width: 92%;
+    opacity: initial;
+}
+
+.load_data-layout {
+    display: flex;
+    justify-content: center;
+}
+
+.load_data-container{
+    max-width: 100%;
+    width: 100%;
+}
+
+.load_data-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorlist{
+    display: none;
+}
+
+span.helptext{
+    display: none;
+}
+
+.required-fields-load_data{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+#div_id_autocasion_pages{
+    max-width: 300px;
+    width: 100%;
+}
+
+#div_id_coches_com_pages{
+    max-width: 300px;
+    width: 100%;
+}
+
+#div_id_motor_es_pages{
+    max-width: 300px;
+    width: 100%;
+}

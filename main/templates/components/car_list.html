@@ -9,6 +9,13 @@
     </h1>
     <hr class="line-break">
 
+    {% if load_message %}
+    <div class="alert alert-success" role="alert">
+        {{ load_message }}
+    </div>
+    {% endif %}
+
+
     {% if title == "Inicio"%}
     <div>
         <form action="{% url 'search_car_by_title' %}" method="POST" class="form-search">

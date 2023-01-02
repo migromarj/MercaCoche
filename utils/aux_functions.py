@@ -202,7 +202,7 @@ def results_after_search(request, q, order, filters1, filters2):
 
 def sepecific_cars_view(request, results, filters1, filters2):
 
-    if filters2[4] != "anyone" or filters2[4] != None: filters2[4] = int(filters2[4])
+    if filters2[4] != "anyone" and filters2[4] != None: filters2[4] = int(filters2[4])
     
     return render(request, 'specific_cars.html', {"cars": results,
                                                 "brands": sorted(filters1[0]),
