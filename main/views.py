@@ -4,8 +4,9 @@ from main.models import Car
 from main.forms import RegisterForm
 
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 from whoosh import query
 from whoosh.index import open_dir
@@ -35,6 +36,7 @@ def index(request):
 
     return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": title_form})
 
+@login_required(login_url='/login')
 def load_data(request):
 
     autocasion_cars = extract_cars_autocasion(num_pages=3)
@@ -69,13 +71,14 @@ def register(request):
 
 def car_details(request, id):
 
-    car_db = Car.objects.get(id=id)
+    car_db = get_object_or_404(Car, id=id)
     
     return load_car_details(request, id, car_db)
 
+@login_required(login_url='/login')
 def add_favorite(request, id):
     
-    car_db = Car.objects.get(id=id)
+    car_db = get_object_or_404(Car, id=id)
 
     user = request.user
     user.favorite_cars.add(car_db)
@@ -83,9 +86,10 @@ def add_favorite(request, id):
 
     return load_car_details(request, id, car_db)
 
+@login_required(login_url='/login')
 def remove_favorite(request, id):
 
-    car_db = Car.objects.get(id=id)
+    car_db = get_object_or_404(Car, id=id)
 
     user = request.user
     user.favorite_cars.remove(car_db)
@@ -93,6 +97,7 @@ def remove_favorite(request, id):
 
     return load_car_details(request, id, car_db)
 
+@login_required(login_url='/login')
 def favorites(request):
     
     user = request.user
@@ -149,6 +154,7 @@ def search_by_specifications(request):
         q, order, filters2 = build_query(request, "GET")
         return results_after_search(request, q, order, filters1, filters2)
 
+@login_required(login_url='/login')
 def cars_recommendation(request):
 
     user = request.user

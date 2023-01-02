@@ -25,7 +25,6 @@
     {% endif %}
     {% endif %}
 
-
     <hr class="line-break">
     <div class="container">
         <div class="row">
@@ -37,7 +36,7 @@
                     {% if car_db.description %}
                     {{ car_db.description }}
                     {% else %}
-                    Sin descripción
+                    Sin descripción.
                     {% endif %}
                 </p>
             </div>
@@ -48,121 +47,26 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Marca</h3>
-                        </div>
-                        <div class="col-6">
-                            <h3 class="btn btn-primary disabled">{{ car_index.brand }}</h3>
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Precio al contado</h3>
-                        </div>
-                        <div class="col-6">
-                            <h3 class="btn btn-primary disabled">{{ car_index.spot_price|intcomma }} €</h3>
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Precio financiado</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_db.financed_price %}
-                            <h3 class="btn btn-primary disabled">{{ car_db.financed_price|intcomma }} €</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% include 'components/table_element_details.html' with label='Marca' value=car_index.brand type='title' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Precio al contado' value=car_index.spot_price type='number' unit='€' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Precio financiado' value=car_db.financed_price type='number' unit='€' %}
             </div>
             <span class="hr-center">
                 <hr class="car_details-info">
             </span>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Provincia</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_index.province %}
-                            <h3 class="btn btn-primary disabled">{{ car_index.province|title }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Matriculación</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_db.registration %}
-                            <h3 class="btn btn-primary disabled">{{ car_db.registration|date:"M/Y" }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Carrocería</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_db.bodywork %}
-                            <h3 class="btn btn-primary disabled">{{ car_db.bodywork }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% include 'components/table_element_details.html' with label='Provincia' value=car_index.province type='title' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Matriculación' value=car_db.registration type='registration' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Carrocería' value=car_db.bodywork type='text' %}
             </div>
-            <span class="hr-center">
-                <hr class="car_details-info">
-            </span>
+            <span class="hr-center"><hr class="car_details-info"></span>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Cambio</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_db.change %}
-                            <h3 class="btn btn-primary disabled">{{ car_db.change }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
+                {% include 'components/table_element_details.html' with label='Cambio' value=car_db.change type='text' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-6">
@@ -177,129 +81,24 @@
                         </div>
                     </div>
                 </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Tiempo de garantía</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_db.guarantee_time %}
-                            <h3 class="btn btn-primary disabled">{{ car_db.guarantee_time }} meses</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Tiempo de farantía' value=car_db.guarantee_time type='guarantee_time' %}
             </div>
-            <span class="hr-center">
-                <hr class="car_details-info">
-            </span>
+            <span class="hr-center"><hr class="car_details-info"></span>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Combustible</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_index.fuel %}
-                            <h3 class="btn btn-primary disabled">{{ car_index.fuel|title }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Kilómetros</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_index.km %}
-                            <h3 class="btn btn-primary disabled">{{ car_index.km|intcomma }} km</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Potencia</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_index.power %}
-                            <h3 class="btn btn-primary disabled">{{ car_index.power }} cv</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% include 'components/table_element_details.html' with label='Combustible' value=car_index.fuel type='title' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Kilómetros' value=car_index.km type='number' unit='km' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Potencia' value=car_index.power type='number' unit='cv' %}
             </div>
-            <span class="hr-center">
-                <hr class="car_details-info">
-            </span>
+            <span class="hr-center"><hr class="car_details-info"></span>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Color</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_index.color %}
-                            <h3 class="btn btn-primary disabled">{{ car_index.color|title }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Nº de asientos</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_index.seats %}
-                            <h3 class="btn btn-primary disabled">{{ car_index.seats }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <span class="hr-center responsive">
-                    <hr class="car_details-info">
-                </span>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <h3 class="btn btn-dark disabled">Nº de puertas</h3>
-                        </div>
-                        <div class="col-6">
-                            {% if car_db.doors %}
-                            <h3 class="btn btn-primary disabled">{{ car_db.doors }}</h3>
-                            {% else %}
-                            <h3 class="btn btn-primary disabled">-</h3>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% include 'components/table_element_details.html' with label='Color' value=car_index.color type='title' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Nº de asientos' value=car_index.seats type='text' %}
+                <span class="hr-center responsive"><hr class="car_details-info"></span>
+                {% include 'components/table_element_details.html' with label='Nº de puertas' value=car_db.doors type='text' %}
             </div>
         </div>
     </div>

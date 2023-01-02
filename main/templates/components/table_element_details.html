@@ -1,0 +1,33 @@
+{% block head %}
+{% load humanize %}
+{% endblock %}
+
+<div class="col-md-4">
+    <div class="row">
+        <div class="col-6">
+            <h3 class="btn btn-dark disabled">{{ label }}</h3>
+        </div>
+        <div class="col-6">
+            {% if value %}
+            {% if type == 'text' %}
+            <h3 class="btn btn-primary disabled">{{ value }}</h3>
+            {% endif %}
+            {% if type == 'title' %}
+            <h3 class="btn btn-primary disabled">{{ value|title }}</h3>
+            {% endif %}
+            {% if type == 'number' %}
+            <h3 class="btn btn-primary disabled">{{ value|intcomma }} {{unit}}</h3>
+            {% endif %}
+            {% if type == 'registration' %}
+            <h3 class="btn btn-primary disabled">{{ value|date:"M/Y" }}</h3>
+            {% endif %}
+            {% if type == 'guarantee_time' %}
+            <h3 class="btn btn-primary disabled">{{ value }} meses</h3>
+            {% endif %}
+            {% else %}
+            <h3 class="btn btn-primary disabled">-</h3>
+            {% endif %}
+        
+        </div>
+    </div>
+</div>

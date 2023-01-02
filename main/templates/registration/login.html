@@ -17,14 +17,6 @@
     </h1>
     <hr class="line-break">
 
-    {% if form.errors %}
-    <ul class="messages alert alert-warning" role="alert">
-        <li class="{{ message.tags }}">
-            El nombre de usuario o la contraseña son incorrectos.
-        </li>
-    </ul>
-    {% endif %}
-
     <div class="login-layout">
         <div class="login-container">
             <form method="POST" class="login-form">
