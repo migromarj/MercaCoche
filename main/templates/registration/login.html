@@ -1,6 +1,8 @@
 {% extends 'master.html' %}
 
 {% block head %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/login.css' %}">
 {% endblock %}
@@ -27,7 +29,8 @@
         <div class="login-container">
             <form method="POST" class="login-form">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form|crispy }}
+                <p class="required-fields-login">Los campos marcados con * son obligatorios.</p>
                 <button class="btn btn-success" id="id_submit_button" type="submit">Inicia sesión</button>
             </form>
             <br>

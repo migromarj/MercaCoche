@@ -36,38 +36,6 @@ def get_brand(car_title):
 
 ########## views.py ##########
 
-#register(request)
-
-def errors_to_spanish(errors):
-    
-    if 'first_name' in errors:
-        errors['Nombre'] = errors['first_name']
-        del errors['first_name']
-
-    if 'last_name' in errors:
-        errors['Apellido'] = errors['last_name']
-        del errors['last_name']
-
-    if 'username' in errors:
-        errors['Nombre de usuario'] = errors['username']
-        del errors['username']
-
-    if 'email' in errors:
-        errors['Email'] = errors['email']
-        del errors['email']
-        if errors['Email'] == 'Ya existe %(model_name)s con este %(field_label)s.':
-            errors['Email'] = 'Ya existe un usuario con este email.'
-
-    if 'password1' in errors:
-        errors['Contraseña'] = errors['password1']
-        del errors['password1']
-
-    if 'password2' in errors:
-        errors['Confirmar contraseña'] = errors['password2']
-        del errors['password2']
-
-    return errors
-
 # car_details(request, id), add_favorite(request, id), remove_favorite(request, id)
 
 def load_car_details(request, id, car_db):

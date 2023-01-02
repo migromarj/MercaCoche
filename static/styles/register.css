@@ -29,8 +29,6 @@ hr.line-break {
 }
 
 .register-container{
-    padding: 1rem;
-    margin: 2rem;
     max-width: 100%;
     width: 100%;
 }
@@ -48,4 +46,40 @@ hr.line-break {
 
 span.helptext{
     display: none;
+}
+
+#div_id_first_name{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_last_name{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_email{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_username{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_password1{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_password2{
+    width: 100%;
+    max-width: 300px;
+}
+
+.required-fields-register{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
 }

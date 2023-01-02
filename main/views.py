@@ -11,7 +11,7 @@ from whoosh import query
 from whoosh.index import open_dir
 from whoosh.qparser import QueryParser, OrGroup
 
-from utils.aux_functions import errors_to_spanish, load_car_details, search_title, load_filters, add_to_filter, cars_form_values, build_query, check_filter, results_after_search, sepecific_cars_view, cars_pagination
+from utils.aux_functions import load_car_details, search_title, load_filters, add_to_filter, cars_form_values, build_query, check_filter, results_after_search, sepecific_cars_view, cars_pagination
 from utils.recommendations import recommend_cars
 from utils.scraping import extract_cars_autocasion, extract_cars_coches_com, extract_cars_motor_es
 from utils.whoosh_and_db import populate_db_and_create_index
@@ -65,12 +65,7 @@ def register(request):
     else:
         form = RegisterForm()
         
-    data_errors = form.errors.as_data()
-    errors = {k: v[0].message for k, v in data_errors.items()}
-
-    errors = errors_to_spanish(errors)
-
-    return render(request, "registration/register.html", {"form": form, "messages": errors})
+    return render(request, "registration/register.html", {"form": form})
 
 def car_details(request, id):
 

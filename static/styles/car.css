@@ -139,6 +139,9 @@ a:link {
 
 .form-control-select{
     margin-top: 20px;
+    min-width: 200px;
+    max-width: 200px;
+    margin-left: 10px;
 }
 
 .form-group{
@@ -161,7 +164,7 @@ a:link {
     margin-bottom: 20px;
 }
 
-.form-control{
+.form-control-input{
     min-width: 200px;
     max-width: 200px;
     margin-left: 10px;

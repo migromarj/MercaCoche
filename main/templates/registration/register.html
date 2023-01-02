@@ -1,6 +1,8 @@
 {% extends 'master.html' %}
 
 {% block head %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/register.css' %}">
 {% endblock %}
@@ -15,21 +17,12 @@
     </h1>
     <hr class="line-break">
 
-    {% if messages %}
-    <ul class="messages alert alert-warning" role="alert">
-        {% for key, value in messages.items %}
-        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-            {{ key }} - {{ value }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
     <div class="register-layout">
         <div class="register-container">
             <form method="POST" action="{% url 'register' %}" class="register-form" novalidate>
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form|crispy }}
+                <p class="required-fields-register">Los campos marcados con * son obligatorios.</p>
                 <button class="btn btn-success" id="id_submit_button" type="submit">Regístrate</button>
             </form>
             <br>

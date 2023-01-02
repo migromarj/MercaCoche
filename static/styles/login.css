@@ -49,3 +49,19 @@ hr.line-break {
 span.helptext{
     display: none;
 }
+
+#div_id_username{
+    width: 100%;
+    max-width: 300px;
+}
+
+#div_id_password{
+    width: 100%;
+    max-width: 300px;
+}
+
+.required-fields-login{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
