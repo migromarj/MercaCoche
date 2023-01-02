@@ -13,7 +13,7 @@
     <div>
         <form action="{% url 'search_car_by_title' %}" method="POST" class="form-search">
             {% csrf_token %}
-            <input type="text" name="search" placeholder="Buscar coche" class="form-control form-input">
+            {{ title_form }}
             &nbsp;
             &nbsp;
             <button type="submit" class="btn btn-success">Buscar</button>

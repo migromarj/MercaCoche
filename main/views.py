@@ -16,6 +16,8 @@ from utils.recommendations import recommend_cars
 from utils.scraping import extract_cars_autocasion, extract_cars_coches_com, extract_cars_motor_es
 from utils.whoosh_and_db import populate_db_and_create_index
 
+from main.forms import SearchTitleForm
+
 # Create your views here.
 
 INDEX_TEMPLATE = "index.html"
@@ -23,15 +25,15 @@ INDEX_TEMPLATE = "index.html"
 def index(request):
 
     cars = []
+    title_form = SearchTitleForm()
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
-        cars_index = ix.searcher().documents()
-        cars_index = list(cars_index)
+        cars_index = list(ix.searcher().documents())
 
         cars = cars_pagination(request, cars_index)
 
-    return render(request, INDEX_TEMPLATE, {"cars": cars})
+    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": title_form})
 
 def load_data(request):
 
@@ -45,12 +47,13 @@ def load_data(request):
     populate_db_and_create_index(ids, all_cars)
  
     cars = []
+    title_form = SearchTitleForm()
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
         cars = list(ix.searcher().documents())
 
-    return render(request, INDEX_TEMPLATE, {"cars": cars})
+    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": title_form})
 
 def register(request):
 
@@ -115,12 +118,20 @@ def favorites(request):
 def search_by_title(request):
 
     if request.method == "POST":
-        search = request.POST.get("search")
-        return search_title(request, search)
+        title_form = SearchTitleForm(request.POST)
+        if title_form.is_valid():
+            search = title_form.cleaned_data['title']
+        else:
+            search = ""
+
+        return search_title(request, search, title_form)
 
     else:
+        title_form = SearchTitleForm()
         title_searched = request.GET.get("title_searched")
-        return search_title(request, title_searched)
+        title_form.fields["title"].initial = title_searched
+
+        return search_title(request, title_searched, title_form)
 
 def search_by_specifications(request):
 

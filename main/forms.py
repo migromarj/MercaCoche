@@ -19,3 +19,15 @@ class RegisterForm(UserCreationForm):
             "password1",
             "password2",
         ]
+
+class SearchTitleForm(forms.Form):
+
+    title = forms.CharField(label="",
+                            widget=forms.TextInput(
+                                attrs={
+                                    "placeholder": "Introduce el título del coche",
+                                    "class": "form-control form-input"
+                                }
+                            ), 
+                            max_length=100, 
+                            required=False)

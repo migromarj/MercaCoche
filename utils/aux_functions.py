@@ -5,6 +5,9 @@ from whoosh.index import open_dir
 from whoosh.qparser import QueryParser, OrGroup
 import unidecode
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from main.forms import SearchTitleForm
+
+INDEX_TEMPLATE = "index.html"
 
 ########## scraping.py ##########
 
@@ -18,6 +21,18 @@ def unidecode_values(province, fuel, color):
         color = unidecode.unidecode(color).lower()
 
     return province, fuel, color
+
+def get_brand(car_title):
+
+    brand = car_title.split(' ')[0].upper()
+
+    if brand == 'MERCEDES':
+        brand = 'MERCEDES-BENZ'
+
+    if brand == 'LAND':
+        brand = 'LAND-ROVER'
+
+    return brand
 
 ########## views.py ##########
 
@@ -71,7 +86,7 @@ def load_car_details(request, id, car_db):
 
 # search_by_title(request)
 
-def search_title(request, search):
+def search_title(request, search, title_form):
 
     cars = []
         
@@ -82,14 +97,14 @@ def search_title(request, search):
             if search == "":
                 cars = list(ix.searcher().documents())
                 elements = cars_pagination(request, cars)
-                return render(request, INDEX_TEMPLATE, {"cars": elements, "title_searched": search})
+                return render(request, INDEX_TEMPLATE, {"cars": elements, "title_searched": search, "title_form": title_form})
 
             query = QueryParser("title", ix.schema, group=OrGroup).parse(search)
             cars = list(searcher.search(query, limit=None))
             elements = cars_pagination(request, cars)
-            return render(request, INDEX_TEMPLATE, {"cars": elements, "title_searched": search})
+            return render(request, INDEX_TEMPLATE, {"cars": elements, "title_searched": search, "title_form": title_form})
 
-    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_searched": search})
+    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_searched": search, "title_form": title_form})
 
 # search_by_specifications(request)
 

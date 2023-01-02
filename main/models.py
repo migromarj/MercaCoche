@@ -13,6 +13,9 @@ class WebUser(AbstractUser):
 
     def __str__(self):
         return str(self.username)
+
+    class Meta:
+        ordering = ('username',)
     
 class Car(models.Model):
 
@@ -30,3 +33,6 @@ class Car(models.Model):
     
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        ordering = ('id',)
