@@ -6,10 +6,10 @@ def recommend_cars(favorite_cars, cars_index, n=12):
     similarities = defaultdict(float)
 
     for car in cars_index:
-        for target_car in favorite_cars:
+        for favorite_car in favorite_cars:
             if car not in favorite_cars:
 
-                similarities[car['id']] += calculate_similarity(car, cars_index[target_car.id])
+                similarities[car['id']] += calculate_similarity(car, cars_index[favorite_car.id])
 
     sorted_cars = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
 
@@ -26,6 +26,7 @@ def calculate_similarity(car1, car2):
 
     brand_similarity = calculate_text_similarity(car1['brand'], car2['brand'])
     price_similarity = calculate_price_similarity(car1['spot_price'], car2['spot_price'])
+
     if aux_condition('province', car1, car2):
         province_similarity = calculate_text_similarity(car1['province'], car2['province'])
     if aux_condition('km', car1, car2):
@@ -73,7 +74,7 @@ def calculate_price_similarity(price1, price2):
 
 def calculate_km_similarity(km1, km2):
 
-    difference = abs(km1 - km1)
+    difference = abs(km1 - km2)
 
     if difference <= 10000:
         return 0.9
