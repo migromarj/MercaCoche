@@ -111,7 +111,7 @@ def cars_form_values(request, form_type):
         province = request.POST.get("province")
         fuel = request.POST.get("fuel")
         color = request.POST.get("color")
-        seat = request.POST.get("seats")
+        seats = request.POST.get("seats")
         order = request.POST.get("order")
         km_min = request.POST.get("km-min")
         km_max = request.POST.get("km-max")
@@ -124,7 +124,7 @@ def cars_form_values(request, form_type):
         province = request.GET.get("province")
         fuel = request.GET.get("fuel")
         color = request.GET.get("color")
-        seat = request.GET.get("seats")
+        seats = request.GET.get("seats")
         order = request.GET.get("order")
         km_min = request.GET.get("km-min")
         km_max = request.GET.get("km-max")
@@ -140,11 +140,11 @@ def cars_form_values(request, form_type):
         if power_min == None: power_min = 0
         if power_max == None: power_max = 500
     
-    return brand, province, fuel, color, seat, order, km_min, km_max, spot_price_min, spot_price_max, power_min, power_max
+    return brand, province, fuel, color, seats, order, km_min, km_max, spot_price_min, spot_price_max, power_min, power_max
 
 def build_query(request, form_type):
 
-    brand, province, fuel, color, seat, order, km_min, km_max, spot_price_min, spot_price_max, power_min, power_max = cars_form_values(request, form_type)
+    brand, province, fuel, color, seats, order, km_min, km_max, spot_price_min, spot_price_max, power_min, power_max = cars_form_values(request, form_type)
 
     search = []
 
@@ -152,7 +152,7 @@ def build_query(request, form_type):
     search = check_filter(search, province, "province")
     search = check_filter(search, fuel, "fuel")
     search = check_filter(search, color, "color")
-    search = check_filter(search, seat, "seats")
+    search = check_filter(search, seats, "seats")
 
     range_filters = [
         query.NumericRange("km", km_min, km_max),
@@ -162,7 +162,7 @@ def build_query(request, form_type):
 
     q = query.And(search + range_filters)
 
-    return (q, order, [brand, province, fuel, color, seat, order, km_min, km_max, spot_price_min, spot_price_max, power_min, power_max])
+    return (q, order, [brand, province, fuel, color, seats, order, km_min, km_max, spot_price_min, spot_price_max, power_min, power_max])
 
 def check_filter(search, filter_, attribute):
 
@@ -202,7 +202,10 @@ def results_after_search(request, q, order, filters1, filters2):
 
 def sepecific_cars_view(request, results, filters1, filters2):
 
-    if filters2[4] != "anyone" and filters2[4] != None: filters2[4] = int(filters2[4])
+    if filters2[4] != "anyone" and filters2[4] != None: 
+        filters2[4] = int(filters2[4])
+
+    print(filters2[5])
     
     return render(request, 'specific_cars.html', {"cars": results,
                                                 "brands": sorted(filters1[0]),

@@ -168,7 +168,7 @@ def search_by_specifications(request):
     elif request.method == "POST" and "clean" in request.POST:
 
         results = cars_pagination(request, cars_index)
-        filters2 = [None, None, None, None, None, None, 0, 300000, 0, 100000, 0, 500]
+        filters2 = [None, None, None, None, None, None, 0, 300000, 0, 200000, 0, 500]
         return sepecific_cars_view(request, results, filters1, filters2)
 
     else:        

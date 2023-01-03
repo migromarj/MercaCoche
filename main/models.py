@@ -16,6 +16,7 @@ class WebUser(AbstractUser):
 
     class Meta:
         ordering = ('username',)
+        verbose_name = 'Usuario'
     
 class Car(models.Model):
 
