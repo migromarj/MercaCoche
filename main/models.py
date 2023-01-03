@@ -22,7 +22,6 @@ class Car(models.Model):
 
     id = models.IntegerField(primary_key=True)
     url = models.URLField(verbose_name='URL anuncio', max_length=200)
-    image = models.URLField(verbose_name='URL imagen', max_length=200)
     description = models.TextField(verbose_name='Descripción', max_length=500, null=True)
     financed_price = models.DecimalField(verbose_name='Precio financiado', max_digits=10, decimal_places=2, null=True)
     registration = models.DateTimeField(verbose_name='Fecha matriculación', null=True)

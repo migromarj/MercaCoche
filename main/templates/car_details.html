@@ -11,7 +11,7 @@
 {% block content %}
 <div class="car_details-wrapper">
     <h1 class="title">
-        {{ car_index.title }}
+        {{ car_index.title|title }}
     </h1>
     {% if user.is_authenticated %}
     {% if favorite %}
@@ -65,7 +65,7 @@
             </div>
             <span class="hr-center"><hr class="car_details-info"></span>
             <div class="row">
-                {% include 'components/table_element_details.html' with label='Cambio' value=car_db.change type='text' %}
+                {% include 'components/table_element_details.html' with label='Cambio' value=car_db.change type='title' %}
                 <span class="hr-center responsive"><hr class="car_details-info"></span>
                 <div class="col-md-4">
                     <div class="row">

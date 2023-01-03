@@ -1,7 +1,7 @@
 <div class="car-card">
     <a href="{% url 'car_details' car.id %}">
         <div class="car-title">
-            {{ car.title }}
+            {{ car.title|title }}
         </div>
         <div class="image-card">
             <img class="car-image" src={{car.image}} alt="Imagen de coche en venta">

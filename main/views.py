@@ -106,7 +106,7 @@ def add_favorite(request, id):
     user.favorite_cars.add(car_db)
     user.save()
 
-    return load_car_details(request, id, car_db)
+    return redirect(to="car_details", id=id)
 
 @login_required(login_url='/login')
 def remove_favorite(request, id):
@@ -117,7 +117,7 @@ def remove_favorite(request, id):
     user.favorite_cars.remove(car_db)
     user.save()
 
-    return load_car_details(request, id, car_db)
+    return redirect(to="car_details", id=id)
 
 @login_required(login_url='/login')
 def favorites(request):
@@ -135,7 +135,7 @@ def favorites(request):
 
         elements = cars_pagination(request, cars)
 
-    return render(request, "favorite_cars.html", {"cars": elements})
+    return render(request, "favorite_cars.html", {"cars": elements})    
 
 def search_by_title(request):
 
@@ -209,6 +209,5 @@ def cars_recommendation(request, n_cars):
 
         results = cars_pagination(request, cars)
 
-        
 
     return render(request, 'recommend_cars.html', {'cars': results, 'n_cars': n_cars})

@@ -32,7 +32,32 @@ def get_brand(car_title):
     if brand == 'LAND':
         brand = 'LAND-ROVER'
 
+    if brand == 'ALFA':
+        brand = 'ALFA-ROMEO'
+
     return brand
+
+def get_color(car_color):
+
+    if car_color == None:
+        return None
+
+    main_color = car_color.split(' ')[0].lower()
+
+    if main_color == 'blanco':
+        return 'blanco'
+    elif main_color == 'negro':
+        return 'negro'
+    elif main_color == 'gris':
+        return 'gris'
+    elif main_color == 'rojo':
+        return 'rojo'
+    elif main_color == 'azul':
+        return 'azul'
+    elif main_color == 'plata':
+        return 'plata'
+    else:
+        return car_color
 
 ########## views.py ##########
 

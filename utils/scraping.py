@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import time
 import datetime
-from utils.aux_functions import unidecode_values, get_brand
+from utils.aux_functions import unidecode_values, get_brand, get_color
 
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
@@ -143,7 +143,7 @@ def extract_cars_autocasion(num_pages=3):
                 'change': car_change,
                 'power': car_power,
                 'guarantee': car_guarantee,
-                'color': car_color,
+                'color': get_color(car_color),
                 'doors': car_doors,
                 'seats': car_seats,
                 'description': car_description
@@ -271,7 +271,7 @@ def extract_cars_coches_com(num_pages=3):
                 'change': car_change,
                 'power': car_power,
                 'guarantee': car_guarantee,
-                'color': car_color,
+                'color': get_color(car_color),
                 'doors': car_doors,
                 'seats': car_seats,
                 'description': car_description
@@ -432,7 +432,7 @@ def extract_cars_motor_es(num_pages=3):
                 'change': car_change,
                 'power': car_power,
                 'guarantee': car_guarantee,
-                'color': car_color,
+                'color': get_color(car_color),
                 'doors': car_doors,
                 'seats': car_seats,
                 'description': car_description
