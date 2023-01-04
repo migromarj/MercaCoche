@@ -127,6 +127,7 @@ def favorites(request):
     favorite_cars = user.favorite_cars.all()
 
     cars = []
+    results = []
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
@@ -134,9 +135,9 @@ def favorites(request):
             car_index = ix.searcher().document(id=str(car.id))
             cars.append(car_index)
 
-        elements = cars_pagination(request, cars)
+        results = cars_pagination(request, cars)
 
-    return render(request, "favorite_cars.html", {"cars": elements})    
+    return render(request, "favorite_cars.html", {"cars": results})    
 
 def search_by_title(request):
 
@@ -197,6 +198,7 @@ def cars_recommendation(request, n_cars):
     favorite_cars = list(user.favorite_cars.all())
 
     cars = []
+    results = []
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
