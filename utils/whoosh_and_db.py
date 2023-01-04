@@ -12,6 +12,8 @@ def populate_db_and_create_index(ids, all_cars):
 
     Car.objects.all().delete()
 
+    aux_titles, aux_description, aux_price = [], [], []
+
     cars = {}
 
     schem = Schema(id = ID(stored=True),
@@ -31,12 +33,13 @@ def populate_db_and_create_index(ids, all_cars):
     os.mkdir("Index")
     
     ix = create_in("Index", schema=schem)
-    
     writer = ix.writer()
 
     for i in range(0, len(ids)):
 
         car = all_cars[i]
+        if insert_duplicate(car, aux_titles, aux_description, aux_price):
+            continue
         
         cars[ids[i]] = Car(id = ids[i],
                         url = car['url'],
@@ -60,6 +63,18 @@ def populate_db_and_create_index(ids, all_cars):
                             power = car['power'],
                             color = car['color'],
                             seats = car['seats'])
+
+        aux_titles.append(car['title'])
+        aux_description.append(car['description'])
+        aux_price.append(car['spot_price'])
     
     Car.objects.bulk_create(cars.values())
     writer.commit()
+
+def insert_duplicate(car, aux_titles, aux_description, aux_price):
+
+    if car['title'] in aux_titles:
+        index_title = aux_titles.index(car['title'])
+        if car['description'] == aux_description[index_title] and car['spot_price'] == aux_price[index_title]:
+            return True
+    return False

@@ -14,6 +14,7 @@ class LoadDataForm(forms.Form):
 class RegisterForm(UserCreationForm):
     
     email = forms.EmailField()
+    first_name = forms.CharField(label="Nombre", widget=forms.TextInput(attrs={"autofocus": True}))
 
     class Meta:
         model = WebUser
@@ -25,6 +26,7 @@ class RegisterForm(UserCreationForm):
             "password1",
             "password2",
         ]
+        
 
 class SearchTitleForm(forms.Form):
 
@@ -40,4 +42,4 @@ class SearchTitleForm(forms.Form):
 
 class RecommendationsForm(forms.Form):
 
-    num_cars = forms.IntegerField(label="Nº de coches recomendados", min_value=0, max_value=100, initial=12, required=True)
+    num_cars = forms.IntegerField(label="Nº de coches recomendados como máximo", min_value=0, max_value=100, initial=12, required=True)

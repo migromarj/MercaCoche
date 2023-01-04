@@ -13,6 +13,8 @@ def recommend_cars(favorite_cars, cars_index, n=12):
 
                 similarities[car['id']] += calculate_similarity(car, cars_index[favorite_car.id])
 
+
+    similarities = {k: v for k, v in similarities.items() if v != 0}
     sorted_cars = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
 
     return sorted_cars[:n]
@@ -74,8 +76,11 @@ def calculate_price_similarity(price1, price2):
     elif difference <= 5000:
         return 0.5
         
-    else:
+    elif difference <= 10000:
         return 0.3
+
+    else:
+        return 0.
 
 def calculate_km_similarity(km1, km2):
 
@@ -87,11 +92,14 @@ def calculate_km_similarity(km1, km2):
     elif difference <= 20000:
         return 0.7
 
-    elif difference <= 50000:
+    elif difference <= 30000:
         return 0.5
 
-    else:
+    elif difference <= 50000:
         return 0.3
+
+    else:
+        return 0.
 
 def calculate_power_similarity(power1, power2):
 
@@ -106,8 +114,11 @@ def calculate_power_similarity(power1, power2):
     elif difference <= 30:
         return 0.5
 
-    else:
+    elif difference <= 40:
         return 0.3
+
+    else:
+        return 0.
 
 def calculate_seats_similarity(seats1, seats2):
 

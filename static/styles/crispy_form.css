@@ -95,6 +95,13 @@ span.helptext{
 
 /* Load data form */
 
+.load_data-form-text{
+    margin-top: 10px;
+    margin-left: 100px;
+    font-size: large;
+    font-weight: 600;
+}
+
 #div_id_autocasion_pages{
     max-width: 300px;
     width: 100%;
@@ -108,4 +115,11 @@ span.helptext{
 #div_id_motor_es_pages{
     max-width: 300px;
     width: 100%;
+}
+
+@media screen and (max-width: 870px) {
+    .load_data-form-text{
+        margin-left: 0px;
+    }
+    
 }
