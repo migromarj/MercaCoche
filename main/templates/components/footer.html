@@ -1,0 +1,25 @@
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/footer.css' %}">
+{% endblock %}
+
+<footer class="container p-4 rounded">
+    <div class="row">
+        <div class="col-md-4 align-self-center">
+            <p class="footer-text">Uso de contenido de:</p>
+            <ul class="d-flex gap-3 list-unstyled">
+                <li><a href="https://www.autocasion.com/" target="_blank"><img class="footer-logo" src="{% static 'images/autocasion.png' %}" alt="Autocasion logo"></a></li>
+                <li><a href="https://www.coches.com/" target="_blank"><img class="footer-logo" src="{% static 'images/cochescom.png' %}" alt="coches.com logo"></a></li>
+                <li><a href="https://www.motor.es/" target="_blank"><img class="footer-logo" src="{% static 'images/motores.png' %}" alt="motor.es logo"></a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 copyright align-self-center d-flex justify-content-center">
+            <p>Desarrollada por <a href="https://github.com/migromarj" target="_blank">Miguel Romero Arjona</a></p>
+        </div>
+        <div class="col-md-4 align-self-center d-flex justify-content-end">
+            <ul class="d-flex gap-1 list-unstyled">
+                <li><a href="https://github.com/migromarj/MercaCoche" target="_blank"><i class="bi bi-github"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</footer>

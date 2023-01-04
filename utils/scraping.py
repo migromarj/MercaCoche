@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 import time
 import datetime
-from utils.aux_functions import unidecode_values
+from utils.aux_functions import unidecode_values, get_brand, get_color
 
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)):
@@ -34,7 +34,7 @@ def extract_cars_autocasion(num_pages=3):
 
         scroll_position = 0
 
-        for i in range(n_scrolls):
+        for _ in range(n_scrolls):
           
             browser.execute_script("window.scrollTo(" + str(scroll_position) + "," + str(scroll_position + 200) + ");")
 
@@ -121,17 +121,16 @@ def extract_cars_autocasion(num_pages=3):
             for block in blocks_data:
                 
                 h2 = block.find('h2')
-                if h2:
-                    if h2.text == 'Descripción':
-                        car_description = block.find('div', {'class':'comentarios'}).text.strip()
-                        break
+                if h2 and  h2.text == 'Descripción':
+                    car_description = block.find('div', {'class':'comentarios'}).text.strip()
+                    break
 
 
             car_province, car_fuel, car_color = unidecode_values(car_province, car_fuel, car_color)
 
             res.append({
                 'title': car_title,
-                'brand': car_title.split(' ')[0].upper(),
+                'brand': get_brand(car_title),
                 'url': car_url,
                 'img': car_img,
                 'province': car_province,
@@ -144,7 +143,7 @@ def extract_cars_autocasion(num_pages=3):
                 'change': car_change,
                 'power': car_power,
                 'guarantee': car_guarantee,
-                'color': car_color,
+                'color': get_color(car_color),
                 'doors': car_doors,
                 'seats': car_seats,
                 'description': car_description
@@ -259,7 +258,7 @@ def extract_cars_coches_com(num_pages=3):
 
             res.append({
                 'title': car_title,
-                'brand': car_title.split(' ')[0].upper(),
+                'brand': get_brand(car_title),
                 'url': car_url,
                 'img': car_img,
                 'province': car_province,
@@ -272,7 +271,7 @@ def extract_cars_coches_com(num_pages=3):
                 'change': car_change,
                 'power': car_power,
                 'guarantee': car_guarantee,
-                'color': car_color,
+                'color': get_color(car_color),
                 'doors': car_doors,
                 'seats': car_seats,
                 'description': car_description
@@ -420,7 +419,7 @@ def extract_cars_motor_es(num_pages=3):
 
             res.append({
                 'title': car_title,
-                'brand': car_title.split(' ')[0].upper(),
+                'brand': get_brand(car_title),
                 'url': car_url,
                 'img': car_img,
                 'province': car_province,
@@ -433,7 +432,7 @@ def extract_cars_motor_es(num_pages=3):
                 'change': car_change,
                 'power': car_power,
                 'guarantee': car_guarantee,
-                'color': car_color,
+                'color': get_color(car_color),
                 'doors': car_doors,
                 'seats': car_seats,
                 'description': car_description

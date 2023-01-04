@@ -1,0 +1,7 @@
+{% extends 'master.html' %}
+
+{% block title %} Recomendaciones {% endblock %}
+
+{% block content %}
+{% include 'components/crispy_form.html' with type='recommendations' title='Recomendaciones' form=form button_label='Busca recomendaciones' %}
+{% endblock %}

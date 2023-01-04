@@ -1,0 +1,18 @@
+{% if cars.has_previous %}
+<a href="?page={{ cars.previous_page_number }}{{ text }}" class="pagination-text">Anterior</a>
+{% endif %}
+{% for p in cars.paginator.page_range %}
+{{ text }}
+{% if cars.number == p %}
+<span class="pagination-text">{{ p }}</span>
+{% else %}
+{% if cars.number|add:1 == p or p|add:1 == cars.number %}
+<a href="?page={{ p }}{{ text }}" class="pagination-text">{{ p }}</a>
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% if cars.has_next %}
+<a href="?page={{ cars.next_page_number }}{{ text }}" class="pagination-text">Siguiente</a>
+{% endif %}
+

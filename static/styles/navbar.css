@@ -1,9 +1,16 @@
+/* Navbar css */
+
 .navbar{
     background-color: #FAAB78;
+    z-index: 15;
 }
 
 .navbar-brand{
     margin-left: 10px;
+}
+
+.navbar-logo{
+    width: 65px;
 }
 
 .navbar-toggler{

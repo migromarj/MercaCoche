@@ -5,11 +5,13 @@ def recommend_cars(favorite_cars, cars_index, n=12):
 
     similarities = defaultdict(float)
 
-    for car in cars_index:
-        for target_car in favorite_cars:
-            if car not in favorite_cars:
+    favorite_cars_ids = [str(car.id) for car in favorite_cars]
 
-                similarities[car['id']] += calculate_similarity(car, cars_index[target_car.id])
+    for car in cars_index:
+        if car['id'] not in favorite_cars_ids:
+            for favorite_car in favorite_cars:
+
+                similarities[car['id']] += calculate_similarity(car, cars_index[favorite_car.id])
 
     sorted_cars = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
 
@@ -17,6 +19,8 @@ def recommend_cars(favorite_cars, cars_index, n=12):
 
 def calculate_similarity(car1, car2):
 
+    brand_similarity = 0.0
+    price_similarity = 0.0
     province_similarity = 0.0
     km_similarity = 0.0
     fuel_similarity = 0.0
@@ -24,8 +28,10 @@ def calculate_similarity(car1, car2):
     color_similarity = 0.0
     seats_similarity = 0.0
 
-    brand_similarity = calculate_text_similarity(car1['brand'], car2['brand'])
-    price_similarity = calculate_price_similarity(car1['spot_price'], car2['spot_price'])
+    if aux_condition('brand', car1, car2):
+        brand_similarity = calculate_text_similarity(car1['brand'], car2['brand'])
+    if aux_condition('spot_price', car1, car2):
+        price_similarity = calculate_price_similarity(car1['spot_price'], car2['spot_price'])
     if aux_condition('province', car1, car2):
         province_similarity = calculate_text_similarity(car1['province'], car2['province'])
     if aux_condition('km', car1, car2):
@@ -73,7 +79,7 @@ def calculate_price_similarity(price1, price2):
 
 def calculate_km_similarity(km1, km2):
 
-    difference = abs(km1 - km1)
+    difference = abs(km1 - km2)
 
     if difference <= 10000:
         return 0.9
@@ -91,13 +97,13 @@ def calculate_power_similarity(power1, power2):
 
     difference = abs(power1 - power2)
 
-    if difference <= 50:
+    if difference <= 10:
         return 0.9
 
-    elif difference <= 100:
+    elif difference <= 20:
         return 0.7
 
-    elif difference <= 200:
+    elif difference <= 30:
         return 0.5
 
     else:

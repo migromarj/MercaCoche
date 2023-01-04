@@ -6,6 +6,7 @@
         {% else %}
         <option value="anyone">Cualquiera</option>
         {% endif %}
+
         {% for i in items %}
         {% if selected == i %}
         <option value="{{ i }}" selected>{{ i|title }}</option>

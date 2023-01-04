@@ -1,3 +1,5 @@
+/* css associated with car_details.html */
+
 .car_details-wrapper {
     margin-top: 4rem;
     margin-bottom: 4rem;
@@ -12,7 +14,7 @@
 
 .heart-button {
     position: absolute;
-    top: 50px;
+    top: 75px;
     right: 0;
     margin: 1rem;
     z-index: 10;

@@ -1,0 +1,13 @@
+/* Footer css */
+
+.footer-logo{
+    height: 20px;
+}
+
+.footer-text{
+    margin-bottom: 5px;
+}
+
+footer.container{
+    background-color: #FAAB78;
+}

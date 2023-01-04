@@ -1,41 +1,7 @@
 {% extends 'master.html' %}
 
-{% block head %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'styles/login.css' %}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-{% endblock %}
+{% block title %} Inicio de sesión {% endblock %}
 
-{% block titulo %} Inicio de sesión {% endblock %}
-
-{% block contenido %}
-
-<div class="login-wrapper">
-    <h1 class="title">
-        Inicio de sesión
-    </h1>
-    <hr class="line-break">
-
-    {% if form.errors %}
-    <ul class="messages alert alert-warning" role="alert">
-        <li class="{{ message.tags }}">
-            El nombre de usuario o la contraseña son incorrectos.
-        </li>
-    </ul>
-    {% endif %}
-
-    <div class="login-layout">
-        <div class="login-container">
-            <form method="POST" class="login-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-success" id="id_submit_button" type="submit">Inicia sesión</button>
-            </form>
-            <br>
-            <div class="login-form">
-                <a href="/register">¿No tienes cuenta? ¡Regístrate!</a>
-            </div>
-        </div>
-    </div>
-</div>
+{% block content %}
+{% include 'components/crispy_form.html' with type='login' title='Inicio de sesión' form=form button_label='Inicia sesión' %}
 {% endblock %}

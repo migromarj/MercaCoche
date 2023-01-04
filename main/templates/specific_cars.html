@@ -1,10 +1,9 @@
 {% extends 'master.html' %}
 
-{% block titulo %} Coches por características {% endblock %}
+{% block title %} Coches por características {% endblock %}
 
-{% block contenido %} 
-		<div class="car-list-wrapper">
-			{% include "components/car_list.html" with title="Coches por características" cars=cars	message="No se han encontrado coches con las características especificadas." brands=brands provinces=provinces fuels=fuels colors=colors seats=seats%}
-		</div>
-
+{% block content %}
+<div class="car-list-wrapper">
+	{% include "components/car_list.html" with title="Coches por características" cars=cars message="No se han encontrado coches con las características especificadas." brands=brands provinces=provinces fuels=fuels colors=colors seats=seats%}
+</div>
 {% endblock %}

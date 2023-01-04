@@ -1,0 +1,7 @@
+{% extends 'master.html' %}
+
+{% block title %} Cargar datos {% endblock %}
+
+{% block content %}
+{% include 'components/crispy_form.html' with type='load_data' title='Cargar datos' form=form button_label='Cargar datos' %}
+{% endblock %}

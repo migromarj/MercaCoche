@@ -1,8 +1,7 @@
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles/car.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/car.css' %}">
+{% endblock %}
 
 <body>
     <h1 class="title">
@@ -10,114 +9,97 @@
     </h1>
     <hr class="line-break">
 
-    {% if title == "Página principal"%}
-        <div>
-            <form action="{% url 'search_car_by_title' %}" method="POST" class="form-search">
-                {% csrf_token %}
-                <input type="text" name="search" placeholder="Buscar coche" class="form-control form-input">
-                &nbsp;
-                &nbsp;  
-                <button type="submit" class="btn btn-success">Buscar</button>
-            </form>
-        </div>
+    {% if load_message %}
+    <div class="alert alert-success" role="alert">
+        {{ load_message }}
+    </div>
+    {% endif %}
+
+
+    {% if title == "Inicio"%}
+    <div>
+        <form action="{% url 'search_car_by_title' %}" method="POST" class="form-search">
+            {% csrf_token %}
+            {{ title_form }}
+            &nbsp;
+            &nbsp;
+            <button type="submit" class="btn btn-success">Buscar</button>
+        </form>
+    </div>
     {% endif %}
     {% if title == "Coches por características" %}
-        <div>
-            <form action="{% url 'search_car_by_specifications' %}" method="POST" class="form-specifications">
-                {% csrf_token %}
-                <div class="form-group">
-                    {% include 'components/form_select.html' with label="Marca" name="brand" items=brands selected=selected_brand %}
-                    {% include 'components/form_select.html' with label="Provincia" name="province" items=provinces selected=selected_province %}
-                    {% include 'components/form_select.html' with label="Combustible" name="fuel" items=fuels selected=selected_fuel %}
-                </div>
-                <div class="form-group">
-                    {% include 'components/form_select.html' with label="Colores" name="color" items=colors selected=selected_color %}
-                    {% include 'components/form_select.html' with label="Número de plazas" name="seats" items=seats selected=selected_seats %}
-                    {% include 'components/form_select.html' with label="Ordenación" name="order" items=orders selected=selected_order %}
-                </div>
-                <div class="form-group-min-max">
-                    {% include 'components/form_min_max.html' with label="Kilómetros" name="km" min=0 max=500000 unit="km" selected_min=selected_km_min selected_max=selected_km_max %}
-                    {% include 'components/form_min_max.html' with label="Precio" name="spot_price" min=0 max=200000 unit="€" selected_min=selected_price_min selected_max=selected_price_max %}
-                </div>
-                <div class="form-group-min-max">
-                    {% include 'components/form_min_max.html' with label="Potencia" name="power" min=0 max=500 unit="cv" selected_min=selected_power_min selected_max=selected_power_max %}
-                </div> 
-                <div class="btn-submit-container">
-                    <button type="submit" class="btn btn-danger btn-clean" name="clean">Borrar filtros</button>
-                    <button type="submit" class="btn btn-success btn-search" name="search">Buscar</button>
-                </div>    
-            </form>
-        </div>
-        <hr class="line-break">
+    <div>
+        <form action="{% url 'search_car_by_specifications' %}" method="POST" class="form-specifications">
+            {% csrf_token %}
+            <div class="form-group">
+                {% include 'components/form_select.html' with label="Marca" name="brand" items=brands selected=selected_brand %}
+                {% include 'components/form_select.html' with label="Provincia" name="province" items=provinces selected=selected_province %}
+                {% include 'components/form_select.html' with label="Combustible" name="fuel" items=fuels selected=selected_fuel %}
+            </div>
+            <div class="form-group">
+                {% include 'components/form_select.html' with label="Colores" name="color" items=colors selected=selected_color %}
+                {% include 'components/form_select.html' with label="Número de plazas" name="seats" items=seats selected=selected_seats %}
+                {% include 'components/form_select.html' with label="Ordenación" name="order" items=orders selected=selected_order %}
+            </div>
+            <div class="form-group-min-max">
+                {% include 'components/form_min_max.html' with label="Kilómetros" name="km" min=0 max=500000 unit="km" selected_min=selected_km_min selected_max=selected_km_max %}
+                {% include 'components/form_min_max.html' with label="Precio" name="spot_price" min=0 max=200000 unit="€" selected_min=selected_price_min selected_max=selected_price_max %}
+            </div>
+            <div class="form-group-min-max">
+                {% include 'components/form_min_max.html' with label="Potencia" name="power" min=0 max=500 unit="cv" selected_min=selected_power_min selected_max=selected_power_max %}
+            </div>
+            <div class="btn-submit-container">
+                <button type="submit" class="btn btn-danger btn-clean" name="clean">Borrar filtros</button>
+                <button type="submit" class="btn btn-success btn-search" name="search">Buscar</button>
+            </div>
+        </form>
+    </div>
+    <hr class="line-break">
     {% endif %}
+
     <div class="cars-container">
         {% if cars %}
-            {% for c in cars %}
-                {% include 'components/car_card.html' with car=c %}
-            {% endfor %}            
+        {% for c in cars %}
+        {% include 'components/car_card.html' with car=c %}
+        {% endfor %}
         {% else %}
-            <h3 class="no-car-text">{{ message }}</h3>
+        <h3 class="no-car-text">{{ message }}</h3>
         {% endif %}
     </div>
+
     <div class="pagination-container">
-    {% if title == "Página principal" and cars %}
-        {% if cars.has_previous %}
-            <a href="?page={{ cars.previous_page_number }}&title_searched={{ title_searched }}" class="pagination-text">Anterior</a>
-        {% endif %}
-
-        {% for p in cars.paginator.page_range %}
-            {% if cars.number == p %}
-                <span class="pagination-text">{{ p }}</span>
+        {% if title == "Inicio" and cars %}
+            {% if title_searched %}
+                {% include 'components/pagination.html' with cars=cars text='&title_searched='|add:title_searched %}
             {% else %}
-                {% if cars.number|add:1 == p or p|add:1 == cars.number %}
-                <a href="?page={{ p }}&title_searched={{ title_searched }}" class="pagination-text">{{ p }}</a>
-                {% endif %}
+                {% include 'components/pagination.html' with cars=cars %}
             {% endif %}
-        {% endfor %}
-
-        {% if cars.has_next %}
-            <a href="?page={{ cars.next_page_number }}&title_searched={{ title_searched }}" class="pagination-text">Siguiente</a>
         {% endif %}
-    {% endif %}
-    {% if title == "Coches por características" and cars %}
 
-    {% if cars.has_previous %}
-        <a href="?page={{ cars.previous_page_number }}&brand={{ selected_brand }}&province={{ selected_province }}&fuel={{ selected_fuel }}&color={{ selected_color }}&seat={{ selected_seats }}&order={{ selected_order }}&km_min={{ selected_km_min }}&km_max={{ selected_km_max }}&spot_price-min={{ selected_price_min }}&spot_price-max={{ selected_price_max }}&power_min={{ selected_power_min }}&power_max={{ selected_power_max }}" class="pagination-text">Anterior</a>
-    {% endif %}
+        {% if title == "Coches por características" and cars %}
+            {% if cars.has_previous %}
+            <a href="?page={{ cars.previous_page_number }}&brand={{ selected_brand }}&province={{ selected_province }}&fuel={{ selected_fuel }}&color={{ selected_color }}&seats={{ selected_seats }}&order={{ selected_order }}&km-min={{ selected_km_min }}&km-max={{ selected_km_max }}&spot_price-min={{ selected_price_min }}&spot_price-max={{ selected_price_max }}&power-min={{ selected_power_min }}&power-max={{ selected_power_max }}" class="pagination-text">Anterior</a>
+            {% endif %}
 
-    {% for p in cars.paginator.page_range %}
-        {% if cars.number == p %}
+            {% for p in cars.paginator.page_range %}
+            {% if cars.number == p %}
             <span class="pagination-text">{{ p }}</span>
-        {% else %}
-            {% if cars.number|add:1 == p or p|add:1 == cars.number %}
-            <a href="?page={{ p }}&brand={{ selected_brand }}&province={{ selected_province }}&fuel={{ selected_fuel }}&color={{ selected_color }}&seat={{ selected_seats }}&order={{ selected_order }}&km_min={{ selected_km_min }}&km_max={{ selected_km_max }}&spot_price-min={{ selected_price_min }}&spot_price-max={{ selected_price_max }}&power_min={{ selected_power_min }}&power_max={{ selected_power_max }}" class="pagination-text">{{ p }}</a>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-
-    {% if cars.has_next %}
-        <a href="?page={{ cars.next_page_number }}&brand={{ selected_brand }}&province={{ selected_province }}&fuel={{ selected_fuel }}&color={{ selected_color }}&seat={{ selected_seats }}&order={{ selected_order }}&km_min={{ selected_km_min }}&km_max={{ selected_km_max }}&spot_price-min={{ selected_price_min }}&spot_price-max={{ selected_price_max }}&power_min={{ selected_power_min }}&power_max={{ selected_power_max }}" class="pagination-text">Siguiente</a>
-    {% endif %}  
-
-    {% endif %}
-    {% if title == "Coches favoritos" and cars %}    
-        {% if cars.has_previous %}
-            <a href="?page={{ cars.previous_page_number }}" class="pagination-text">Anterior</a>
-        {% endif %}
-
-        {% for p in cars.paginator.page_range %}
-            {% if cars.number == p %}
-                <span class="pagination-text">{{ p }}</span>
             {% else %}
-                {% if cars.number|add:1 == p or p|add:1 == cars.number %}
-                <a href="?page={{ p }}" class="pagination-text">{{ p }}</a>
-                {% endif %}
+            {% if cars.number|add:1 == p or p|add:1 == cars.number %}
+            <a href="?page={{ p }}&brand={{ selected_brand }}&province={{ selected_province }}&fuel={{ selected_fuel }}&color={{ selected_color }}&seats={{ selected_seats }}&order={{ selected_order }}&km-min={{ selected_km_min }}&km-max={{ selected_km_max }}&spot_price-min={{ selected_price_min }}&spot_price-max={{ selected_price_max }}&power-min={{ selected_power_min }}&power-max={{ selected_power_max }}" class="pagination-text">{{ p }}</a>
             {% endif %}
-        {% endfor %}
+            {% endif %}
+            {% endfor %}
 
-        {% if cars.has_next %}
-            <a href="?page={{ cars.next_page_number }}" class="pagination-text">Siguiente</a>
-        {% endif %}    
-    {% endif %}
-    </div>  
+            {% if cars.has_next %}
+            <a href="?page={{ cars.next_page_number }}&brand={{ selected_brand }}&province={{ selected_province }}&fuel={{ selected_fuel }}&color={{ selected_color }}&seats={{ selected_seats }}&order={{ selected_order }}&km-min={{ selected_km_min }}&km-max={{ selected_km_max }}&spot_price-min={{ selected_price_min }}&spot_price-max={{ selected_price_max }}&power-min={{ selected_power_min }}&power-max={{ selected_power_max }}" class="pagination-text">Siguiente</a>
+            {% endif %}
+        {% endif %}
+
+        {% if title == "Coches favoritos" or title == "Coches recomendados"%}
+            {% if cars %}
+                {% include 'components/pagination.html' with cars=cars %}
+            {% endif %}
+        {% endif %}
+    </div>
 </body>
