@@ -2,6 +2,7 @@
 
 .navbar{
     background-color: #FAAB78;
+    z-index: 15;
 }
 
 .navbar-brand{

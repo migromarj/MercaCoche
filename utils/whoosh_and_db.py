@@ -5,8 +5,11 @@ from whoosh.fields import Schema, TEXT, KEYWORD, NUMERIC, ID, STORED
 from utils.scraping import extract_cars_autocasion, extract_cars_coches_com, extract_cars_motor_es
 
 def populate_db_and_create_index(ids, all_cars):
-    
-    WebUser.objects.all().delete()
+
+    for user in WebUser.objects.all():
+        user.favorite_cars.clear()
+        user.save()
+
     Car.objects.all().delete()
 
     cars = {}

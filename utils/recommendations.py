@@ -5,9 +5,11 @@ def recommend_cars(favorite_cars, cars_index, n=12):
 
     similarities = defaultdict(float)
 
+    favorite_cars_ids = [str(car.id) for car in favorite_cars]
+
     for car in cars_index:
-        for favorite_car in favorite_cars:
-            if car not in favorite_cars:
+        if car['id'] not in favorite_cars_ids:
+            for favorite_car in favorite_cars:
 
                 similarities[car['id']] += calculate_similarity(car, cars_index[favorite_car.id])
 
@@ -95,13 +97,13 @@ def calculate_power_similarity(power1, power2):
 
     difference = abs(power1 - power2)
 
-    if difference <= 50:
+    if difference <= 10:
         return 0.9
 
-    elif difference <= 100:
+    elif difference <= 20:
         return 0.7
 
-    elif difference <= 200:
+    elif difference <= 30:
         return 0.5
 
     else:
