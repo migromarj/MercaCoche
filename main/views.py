@@ -27,6 +27,7 @@ def index(request):
 
     cars = []
     title_form = SearchTitleForm()
+    load_message = request.GET.get("load_message")
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
@@ -34,7 +35,7 @@ def index(request):
 
         cars = cars_pagination(request, cars_index)
 
-    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": title_form})
+    return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": title_form, "load_message": load_message})
 
 @login_required(login_url='/login')
 def load_data(request):
@@ -51,7 +52,7 @@ def load_data(request):
 
             message = "Se han cargado e indexado " + str(n_total_cars) + " coches. De todos estos " + str(n_autocasion) + " han sido de la página de Autocasion, " + str(n_coches_com) + " de la página de coches.com y " + str(n_motor_es) + " de la página de motor.es."
 
-            return render(request, INDEX_TEMPLATE, {"cars": cars, "title_form": SearchTitleForm(), "load_message": message})            
+            return redirect("/?load_message="+message)          
 
         else:
             return render(request, "load_data.html", {"form": form})

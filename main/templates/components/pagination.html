@@ -2,7 +2,6 @@
 <a href="?page={{ cars.previous_page_number }}{{ text }}" class="pagination-text">Anterior</a>
 {% endif %}
 {% for p in cars.paginator.page_range %}
-{{ text }}
 {% if cars.number == p %}
 <span class="pagination-text">{{ p }}</span>
 {% else %}
