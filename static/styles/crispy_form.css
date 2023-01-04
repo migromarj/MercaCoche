@@ -88,11 +88,6 @@ span.helptext{
 
 /* Login form */
 
-#div_id_username{
-    width: 100%;
-    max-width: 300px;
-}
-
 #div_id_password{
     width: 100%;
     max-width: 300px;

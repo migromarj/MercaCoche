@@ -50,7 +50,7 @@ def load_data(request):
 
             cars, n_total_cars, n_autocasion, n_coches_com, n_motor_es = extract_data(autocasion_pages, coches_com_pages, motor_es_pages)
 
-            message = "Se han cargado e indexado " + str(n_total_cars) + " coches. De todos estos " + str(n_autocasion) + " han sido de la página de Autocasion, " + str(n_coches_com) + " de la página de coches.com y " + str(n_motor_es) + " de la página de motor.es."
+            message = "Se han cargado e indexado " + str(n_total_cars) + " coches. De todos estos " + str(n_autocasion) + " han sido de la página de Autocasión, " + str(n_coches_com) + " de la página de coches.com y " + str(n_motor_es) + " de la página de motor.es."
 
             return redirect("/?load_message="+message)          
 

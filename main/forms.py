@@ -7,7 +7,7 @@ from main.models import WebUser
 
 class LoadDataForm(forms.Form):
 
-    autocasion_pages = forms.IntegerField(label="Nº de páginas de Autocasion", min_value=0, max_value=100, initial=3, required=True)
+    autocasion_pages = forms.IntegerField(label="Nº de páginas de Autocasión", min_value=0, max_value=100, initial=3, required=True)
     coches_com_pages = forms.IntegerField(label="Nº de páginas de coches.com", min_value=0, max_value=100, initial=3, required=True)
     motor_es_pages = forms.IntegerField(label="Nº de páginas de motor.es", min_value=0, max_value=100, initial=3, required=True)
 

@@ -63,5 +63,3 @@ def populate_db_and_create_index(ids, all_cars):
     
     Car.objects.bulk_create(cars.values())
     writer.commit()
-
-    print("Fin de carga e indexado. Se han cargado e indexado " + str(len(cars)) + " coches.")
