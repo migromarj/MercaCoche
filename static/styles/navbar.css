@@ -11,6 +11,11 @@
 
 .navbar-logo{
     width: 65px;
+    margin-left: 10px;
+}
+
+.nav-link{
+    font-size: 1.1rem;
 }
 
 .navbar-toggler{
