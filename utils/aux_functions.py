@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render
 from whoosh import query
 from whoosh.index import open_dir
-from whoosh.qparser import QueryParser, OrGroup
+from whoosh.qparser import QueryParser
 import unidecode
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from main.forms import SearchTitleForm
@@ -92,7 +92,7 @@ def search_title(request, search, title_form):
                 elements = cars_pagination(request, cars)
                 return render(request, INDEX_TEMPLATE, {"cars": elements, "title_searched": search, "title_form": title_form})
 
-            query = QueryParser("title", ix.schema, group=OrGroup).parse(search)
+            query = QueryParser("title", ix.schema).parse(search)
             cars = list(searcher.search(query, limit=None))
             elements = cars_pagination(request, cars)
             return render(request, INDEX_TEMPLATE, {"cars": elements, "title_searched": search, "title_form": title_form})
@@ -229,8 +229,6 @@ def sepecific_cars_view(request, results, filters1, filters2):
 
     if filters2[4] != "anyone" and filters2[4] != None: 
         filters2[4] = int(filters2[4])
-
-    print(filters2[5])
     
     return render(request, 'specific_cars.html', {"cars": results,
                                                 "brands": sorted(filters1[0]),

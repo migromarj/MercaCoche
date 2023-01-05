@@ -11,6 +11,11 @@
     </h1>
     <hr class="line-break">
 
+    {% if type == 'load_data' %}
+    <p class="load_data-form-text">Indique el número de páginas sobre las que desea hacer <i>scraping</i> en cada sitio web:</p>
+    <br>
+    {% endif %}
+
     <div class="crispy-layout">
         <div class="crispy-container">
             {% if type == 'register' %}
@@ -34,7 +39,7 @@
             </div>
             {% elif type == 'login' %}
             <div class="crispy-form">
-                <a href="/login">¿Ya tienes cuenta? ¡Inicia sesión!</a>
+                <a href="/register">¿No tienes cuenta? ¡Regístrate!</a>
             </div>
             {% endif %}
         </div>

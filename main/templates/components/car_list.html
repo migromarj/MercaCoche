@@ -63,7 +63,11 @@
         {% include 'components/car_card.html' with car=c %}
         {% endfor %}
         {% else %}
+        {% if title_searched %}
+        <h3 class="no-car-text">No se han encontrado coches con la búsqueda "{{title_searched}}".</h3>
+        {% else %}
         <h3 class="no-car-text">{{ message }}</h3>
+        {% endif %}
         {% endif %}
     </div>
 

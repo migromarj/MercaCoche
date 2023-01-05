@@ -128,11 +128,13 @@ a:link {
     max-width: 400px;
 }
 
+.no-car-text{
+    margin-top: 50px;
+}
+
 /*Filters form*/
 
 .form-select-container{
-    margin-top: 20px;
-    margin-bottom: 20px;
     max-width: 200px;
     margin: 10px;
 }

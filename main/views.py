@@ -50,7 +50,7 @@ def load_data(request):
 
             cars, n_total_cars, n_autocasion, n_coches_com, n_motor_es = extract_data(autocasion_pages, coches_com_pages, motor_es_pages)
 
-            message = "Se han cargado e indexado " + str(n_total_cars) + " coches. De todos estos " + str(n_autocasion) + " han sido de la página de Autocasion, " + str(n_coches_com) + " de la página de coches.com y " + str(n_motor_es) + " de la página de motor.es."
+            message = "Se han cargado e indexado " + str(n_total_cars) + " coches. De todos estos " + str(n_autocasion) + " han sido de la página de Autocasión, " + str(n_coches_com) + " de la página de coches.com y " + str(n_motor_es) + " de la página de motor.es."
 
             return redirect("/?load_message="+message)          
 
@@ -127,6 +127,7 @@ def favorites(request):
     favorite_cars = user.favorite_cars.all()
 
     cars = []
+    results = []
 
     if os.path.exists("Index"):
         ix = open_dir("Index")
@@ -134,9 +135,9 @@ def favorites(request):
             car_index = ix.searcher().document(id=str(car.id))
             cars.append(car_index)
 
-        elements = cars_pagination(request, cars)
+        results = cars_pagination(request, cars)
 
-    return render(request, "favorite_cars.html", {"cars": elements})    
+    return render(request, "favorite_cars.html", {"cars": results})    
 
 def search_by_title(request):
 
@@ -197,6 +198,7 @@ def cars_recommendation(request, n_cars):
     favorite_cars = list(user.favorite_cars.all())
 
     cars = []
+    results = []
 
     if os.path.exists("Index"):
         ix = open_dir("Index")

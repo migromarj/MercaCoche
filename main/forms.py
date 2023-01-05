@@ -7,13 +7,15 @@ from main.models import WebUser
 
 class LoadDataForm(forms.Form):
 
-    autocasion_pages = forms.IntegerField(label="Nº de páginas de Autocasion", min_value=0, max_value=100, initial=3, required=True)
+    autocasion_pages = forms.IntegerField(label="Nº de páginas de Autocasión", min_value=0, max_value=100, initial=3, required=True)
     coches_com_pages = forms.IntegerField(label="Nº de páginas de coches.com", min_value=0, max_value=100, initial=3, required=True)
     motor_es_pages = forms.IntegerField(label="Nº de páginas de motor.es", min_value=0, max_value=100, initial=3, required=True)
 
 class RegisterForm(UserCreationForm):
     
     email = forms.EmailField()
+    first_name = forms.CharField(label="Nombre", widget=forms.TextInput(attrs={"autofocus": True}))
+    last_name = forms.CharField(label="Apellido")
 
     class Meta:
         model = WebUser
@@ -25,6 +27,7 @@ class RegisterForm(UserCreationForm):
             "password1",
             "password2",
         ]
+        
 
 class SearchTitleForm(forms.Form):
 
@@ -40,4 +43,4 @@ class SearchTitleForm(forms.Form):
 
 class RecommendationsForm(forms.Form):
 
-    num_cars = forms.IntegerField(label="Nº de coches recomendados", min_value=0, max_value=100, initial=12, required=True)
+    num_cars = forms.IntegerField(label="Nº de coches recomendados como máximo", min_value=0, max_value=100, initial=12, required=True)
