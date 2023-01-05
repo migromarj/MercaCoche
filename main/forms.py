@@ -15,6 +15,7 @@ class RegisterForm(UserCreationForm):
     
     email = forms.EmailField()
     first_name = forms.CharField(label="Nombre", widget=forms.TextInput(attrs={"autofocus": True}))
+    last_name = forms.CharField(label="Apellido")
 
     class Meta:
         model = WebUser
